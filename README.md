@@ -76,7 +76,7 @@ O sistema é composto por frontend (web e mobile), backend, APIs externas e banc
 - **APIs Externas**: Groq Cloud API (chatbot) e OpenWeatherMap API (previsão do tempo).  
 - **Banco de Dados**: Armazena informações de usuários, plantas, resíduos e missões.  
 
-![Diagrama de Arquitetura](documentos/arquitetura/arquitetura.png)
+<img width="773" height="336" alt="arquitetura" src="https://github.com/user-attachments/assets/e3a14401-74a3-4b1f-94af-dd9356e423d6" />
 
 ---
 
