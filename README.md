@@ -79,4 +79,13 @@ O sistema é composto por frontend (web e mobile), backend, APIs externas e banc
 
 ## 7. Integrantes da Equipe e seus papeis
 
+## Integrantes da Equipe e Papéis
+
+| Nome | Matrícula | Função |
+| :--- | :--- | :--- |
+| Anyele Ventura Lima | 2323813 | Desenvolvimento Backend e APIs |
+| Isadora Ianne Aguiar de Castro | 2323864 | Modelagem de Dados e Arquitetura |
+| Luiz Henrique | 202400004 | Desenvolvimento Frontend e UX/UI |
+| Silvanir Nascimento dos Santos | 2326784 | Análise de Requisitos e Documentação |
+
 
