@@ -17,7 +17,7 @@ A arquitetura do sistema é projetada para ser multiplataforma, usando um modelo
 
 **Diagrama de Arquitetura**
 
-![Diagrama de Arquitetura](documentos/arquitetura/arquitetura.png)
+![Diagrama de Arquitetura](arquitetura.png)
 
 **Decisões Técnicas e Justificativas**
 
