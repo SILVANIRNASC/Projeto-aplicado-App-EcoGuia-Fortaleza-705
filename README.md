@@ -74,25 +74,30 @@ O sistema é composto por frontend (web e mobile), backend, APIs externas e banc
 
 ### 7. Proposta de Cronograma para a Etapa 2 (N708)
 
-Este cronograma foi planejado para a Etapa 2 do projeto, com duração total de **4 semanas**. As atividades estão divididas para garantir uma progressão lógica e eficiente no desenvolvimento da solução.
+Este cronograma foi planejado para a Etapa 2 do projeto, com duração total de **4 semanas**. As atividades estão otimizadas, considerando que as APIs de terceiros já estão configuradas e prontas para integração.
 
 | **Semana** | **Atividade** | **Descrição Detalhada** |
 | :--- | :--- | :--- |
-| **Semana 1** | **Configuração e Desenvolvimento Inicial** | Configurar o ambiente de desenvolvimento, banco de dados e as primeiras funcionalidades do backend. |
-| | | - **Dia 1-3:** Configuração do ambiente de desenvolvimento (Node.js, Express.js). Instalação de dependências e ferramentas necessárias. |
-| | | - **Dia 4-5:** Configuração do banco de dados (ex: MySQL/PostgreSQL). Criação do modelo de dados inicial (tabelas de usuário, resíduos, etc.). |
-| | | - **Dia 6-7:** Desenvolvimento dos primeiros **endpoints da API** (ex: cadastro e login de usuário). |
-| **Semana 2** | **Desenvolvimento Frontend e Backend** | Foco na construção da interface do usuário e na continuidade do backend. |
-| | | - **Dia 1-4:** Desenvolvimento das telas principais do aplicativo (home, busca de ecopontos) no frontend. |
-| | | - **Dia 5-7:** Criação dos endpoints do backend para buscar dados de resíduos e pontos de coleta. |
-| **Semana 3** | **Integração de APIs e Testes Iniciais** | Conectar a solução às APIs de terceiros e realizar os primeiros testes. |
-| | | - **Dia 1-3:** Integração com a **Groq Cloud API** para a funcionalidade de chatbot. Desenvolvimento da lógica de comunicação e tratamento de respostas. |
-| | | - **Dia 4-5:** Integração com a **OpenWeatherMap API** para dados climáticos (opcional). |
-| | | - **Dia 6-7:** Realização de **testes de integração** entre frontend e backend para os endpoints básicos (login, busca). |
-| **Semana 4** | **Testes Finais, Refinamentos e Documentação** | Etapa final para garantir a qualidade do produto e documentar o processo. |
-| | | - **Dia 1-3:** Realização de **testes de usabilidade** e **testes de aceitação** para garantir que as funcionalidades atendem aos requisitos. Correção de bugs. |
-| | | - **Dia 4-5:** Refinamento da interface do usuário (UI) e experiência do usuário (UX) com base nos feedbacks dos testes. |
-| | | - **Dia 6-7:** **Documentação final** da API e do código. Preparação para a entrega da Etapa 2. |
+| **Semana 1** | **Configuração do Backend e Modelagem do Banco de Dados** | Foco na estrutura fundamental do sistema. |
+| | | - **Dia 1-3:** Configuração do ambiente de desenvolvimento (Node.js, Express.js). Instalação de dependências e ferramentas. |
+| | | - **Dia 4-7:** Desenvolvimento do modelo de dados no banco de dados. Criação das tabelas de `Usuario`, `PontoColeta`, `Residuo` e `Planta`. |
+| **Semana 2** | **Desenvolvimento Frontend e Backend** | Início da construção das interfaces e funcionalidades principais. |
+| | | - **Dia 1-4:** Desenvolvimento das telas principais do aplicativo, como a tela de busca de ecopontos e o painel de jardinagem. |
+| | | - **Dia 5-7:** Criação dos endpoints no backend para buscar dados de pontos de coleta e para o cadastro de plantas. |
+| **Semana 3** | **Integração de APIs e Desenvolvimento de Funcionalidades-chave** | A etapa central de integração e implementação da lógica de negócio. |
+| | | - **Dia 1-3:** **Integração com a Groq Cloud API**. Desenvolvimento da lógica do chatbot e do endpoint `/api/ask`. |
+| | | - **Dia 4-5:** **Integração com a OpenWeatherMap API** para fornecer dados climáticos relevantes para a jardinagem. |
+| | | - **Dia 6-7:** Desenvolvimento da funcionalidade de compartilhamento de dicas sustentáveis. |
+| **Semana 4** | **Testes Finais, Refinamentos e Documentação** | Etapa de garantia de qualidade e preparação para a entrega. |
+| | | - **Dia 1-3:** **Testes de Integração e Funcionalidade**. Verificação do fluxo completo da aplicação (frontend-backend-APIs). |
+| | | - **Dia 4-5:** **Testes de Usabilidade e Aceitação**. Refinamento da interface e correção de bugs com base no feedback. |
+| | | - **Dia 6-7:** Finalização da **Documentação** (código e API) e preparação para a apresentação do trabalho. |
+
+---
+
+### Análise de Viabilidade
+
+O cronograma revisado é **altamente viável** e demonstra um planejamento eficiente. A remoção da etapa de configuração das APIs permite que a equipe se concentre no desenvolvimento de funcionalidades e em testes mais rigorosos. A alocação de tempo para cada fase é realista e segue uma sequência lógica para o desenvolvimento do projeto.
 
 ---
 
