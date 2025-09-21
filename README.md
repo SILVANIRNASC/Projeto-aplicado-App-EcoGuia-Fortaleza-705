@@ -6,7 +6,13 @@ Repositório do Projeto Aplicado N705 - Documentação técnica em Markdown e pr
 ---
 
 ## 1. Introdução
-O projeto **App Sustentável Fortaleza** tem como foco auxiliar a população na gestão sustentável de resíduos e no incentivo à jardinagem urbana. O sistema integra educação ambiental, descarte correto de resíduos e engajamento comunitário.
+O projeto *App Sustentável Fortaleza* contribui diretamente para a ODS 11 – Cidades e Comunidades Sustentáveis, ao propor soluções que favorecem o desenvolvimento urbano de forma inclusiva, segura, resiliente e sustentável. A iniciativa busca engajar a população na gestão consciente dos resíduos e no incentivo à jardinagem urbana, aproximando os cidadãos de práticas que fortalecem a relação entre qualidade de vida e preservação ambiental.
+
+Por meio da integração de educação ambiental, descarte correto de resíduos e engajamento comunitário, o aplicativo incentiva comportamentos que reduzem impactos negativos no meio ambiente urbano, como o acúmulo de lixo em vias públicas, a poluição de solos e águas, além da emissão de gases associados à decomposição inadequada de resíduos. Dessa forma, a proposta pode promover uma cidade mais limpa, organizada e ambientalmente equilibrada.
+
+Além disso, ao valorizar a jardinagem urbana e o cultivo sustentável, o projeto estimula a criação de áreas verdes e o contato da população com práticas ecológicas. Esse aspecto contribui para o embelezamento dos espaços coletivos, para a melhoria da qualidade do ar e para a redução das ilhas de calor, desafios comuns em grandes centros urbanos.
+
+Outro ponto importante é o engajamento comunitário, que fortalece o senso de responsabilidade coletiva e a participação cidadã na construção de uma cidade mais sustentável. Ao oferecer informações e ferramentas digitais de fácil acesso, o aplicativo amplia a inclusão e democratiza o conhecimento sobre práticas ambientais, alcançando diferentes faixas etárias e grupos sociais.
 
 ---
 
