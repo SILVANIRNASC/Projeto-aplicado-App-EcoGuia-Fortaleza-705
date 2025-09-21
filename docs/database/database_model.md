@@ -1,9 +1,3 @@
-Com certeza\! Vou refazer a estrutura do documento `database_model.md` para que fique mais completa, clara e simples de ser entendida por estudantes de Análise e Desenvolvimento de Sistemas (ADS).
-
-A ideia é que este documento sirva como um guia prático para a criação do banco de dados, explicando não só o quê, mas também o porquê de cada parte.
-
------
-
 # Modelo de Dados – App Sustentável Fortaleza 🌱
 
 ## 1\. Introdução
