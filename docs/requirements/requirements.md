@@ -1,81 +1,76 @@
 # Requirements – App Sustentável Fortaleza 🌱
 
-## 1. Introdução  
-O **App Sustentável Fortaleza** tem como objetivo auxiliar a população na gestão sustentável de resíduos e no incentivo à jardinagem urbana, por meio de ferramentas de educação ambiental, descarte correto de materiais e engajamento comunitário.  
+## 1. Introdução
 
-Este documento especifica os requisitos funcionais e não-funcionais do sistema, servindo como base para seu desenvolvimento e manutenção.  
-
----
-
-## 2. Escopo do Sistema  
-O aplicativo permitirá que usuários:  
-- Cadastrem e consultem pontos de coleta de resíduos.  
-- Acessem informações sobre descarte correto de materiais.  
-- Participem de ações comunitárias ligadas à sustentabilidade.  
-- Registrem suas plantas e recebam orientações de jardinagem urbana.  
-- Interajam com a comunidade através de dicas, eventos e iniciativas sustentáveis.  
+O **App Sustentável Fortaleza** é uma plataforma com o objetivo de auxiliar a população na gestão de resíduos, incentivar a jardinagem urbana e promover o engajamento comunitário em iniciativas sustentáveis. Este documento detalha os requisitos e as funcionalidades do sistema, servindo como guia para as equipes de desenvolvimento, design e testes.
 
 ---
 
-## 3. Requisitos Funcionais  
+## 2. Perfis de Usuários (Personas)
 
-### 3.1 Gestão de Resíduos  
-- **RF01** – O sistema deve permitir que o usuário localize pontos de coleta de resíduos em Fortaleza.  
-- **RF02** – O sistema deve exibir informações detalhadas sobre o tipo de resíduo aceito em cada ponto de coleta.  
-- **RF03** – O sistema deve oferecer um mecanismo de busca por tipo de resíduo (ex.: óleo, pilhas, eletrônicos).  
+Para garantir que o aplicativo atenda às necessidades de seu público, definimos os seguintes perfis de usuário:
 
-### 3.2 Jardinagem Urbana  
-- **RF04** – O sistema deve permitir o cadastro de plantas pelo usuário, com informações básicas (nome popular, nome científico, data de plantio).  
-- **RF05** – O sistema deve enviar notificações com dicas de cultivo sustentável e compostagem caseira.  
-
-### 3.3 Educação Ambiental  
-- **RF06** – O sistema deve disponibilizar conteúdos educativos sobre reciclagem, compostagem e jardinagem urbana.  
-- **RF07** – O sistema deve permitir a atualização periódica desses conteúdos por administradores.  
-
-### 3.4 Engajamento Comunitário  
-- **RF08** – O sistema deve permitir que usuários publiquem e compartilhem dicas sustentáveis.  
-- **RF09** – O sistema deve disponibilizar um calendário de eventos comunitários relacionados à sustentabilidade.  
-- **RF10** – O sistema deve permitir que usuários confirmem presença em eventos.  
-
-### 3.5 Acessibilidade e Inclusão  
-- **RF11** – O sistema deve oferecer interface intuitiva e acessível, com suporte a alto contraste e leitura por leitores de tela.  
-- **RF12** – O sistema deve permitir personalização do idioma (Português como padrão, com possibilidade de expansão futura).  
+* **Maria, a Engajada Ambiental:** Jovem de 25 anos, estudante, moradora da área de lazer do Cocó. Quer encontrar pontos de coleta de lixo eletrônico, participar de ações de limpeza de praias e trocar dicas de sustentabilidade. Usa o celular para tudo e valoriza aplicativos com design intuitivo e comunidades ativas.
+* **Carlos, o Jardineiro Iniciante:** Homem de 45 anos, pai de família, morador do Meireles. Começou a cultivar uma horta em casa e precisa de ajuda para saber como cuidar das plantas, fazer compostagem e identificar pragas. Não tem muito tempo, então precisa de informações rápidas e diretas.
+* **Ana, a Zeladora do Lar:** Mulher de 60 anos, aposentada, moradora do bairro Parangaba. Sempre reciclou e quer achar um jeito fácil de saber onde descartar resíduos específicos, como óleo de cozinha e pilhas, sem ter que ir longe de casa. Prefere interfaces simples e com textos em letras maiores.
 
 ---
 
-## 4. Requisitos Não-Funcionais  
+## 3. Requisitos Funcionais (RF)
 
-### 4.1 Usabilidade  
-- **RNF01** – A interface deve ser simples, clara e adaptada para diferentes faixas etárias.  
-- **RNF02** – O sistema deve seguir boas práticas de acessibilidade digital (WCAG 2.1).  
+Os requisitos a seguir descrevem as funcionalidades que o aplicativo deve oferecer:
 
-### 4.2 Desempenho  
-- **RNF03** – O sistema deve carregar as páginas principais em até 3 segundos em conexões padrão de internet móvel.  
-- **RNF04** – O aplicativo deve suportar até 10.000 acessos simultâneos sem perda significativa de desempenho.  
-
-### 4.3 Segurança  
-- **RNF05** – O sistema deve proteger os dados pessoais dos usuários em conformidade com a LGPD (Lei Geral de Proteção de Dados).  
-- **RNF06** – O sistema deve usar autenticação segura para cadastros e logins.  
-
-### 4.4 Portabilidade  
-- **RNF07** – O aplicativo deve ser compatível com dispositivos Android (versão 8.0 ou superior) e iOS (versão 13 ou superior).  
-- **RNF08** – O sistema deve possuir versão web responsiva acessível em navegadores modernos.  
-
-### 4.5 Manutenibilidade  
-- **RNF09** – O código deve ser documentado e modular, permitindo fácil manutenção e expansão de funcionalidades.  
-- **RNF10** – O sistema deve permitir integração futura com APIs externas de serviços públicos (ex.: coleta seletiva municipal).  
+* **RF01 – Gestão de Resíduos:** O sistema deve permitir que o usuário pesquise e localize pontos de coleta de resíduos (ecopontos, pontos de recebimento de eletrônicos, etc.) por tipo de material, bairro ou proximidade.
+* **RF02 – Informações de Descarte:** O aplicativo deve exibir uma página detalhada para cada tipo de resíduo, informando o que pode ser reciclado, o processo de descarte correto e os pontos de coleta associados.
+* **RF03 – Cadastro e Monitoramento de Plantas:** O usuário deve poder cadastrar plantas em seu "jardim virtual", com informações como nome popular, nome científico e data de plantio.
+* **RF04 – Calendário de Cuidados:** O sistema deve gerar um calendário personalizado de cuidados para cada planta cadastrada, incluindo alertas para rega, adubação e poda.
+* **RF05 – Conteúdo Educativo:** O aplicativo deve disponibilizar uma biblioteca de conteúdos educativos sobre sustentabilidade, como artigos, vídeos e infográficos sobre compostagem, jardinagem e reciclagem.
+* **RF06 – Rede Social:** O sistema deve permitir que usuários publiquem posts com textos e fotos, interajam com as postagens de outros usuários (curtir, comentar) e sigam outros perfis.
+* **RF07 – Eventos Comunitários:** O aplicativo deve ter um calendário de eventos comunitários (mutirões de limpeza, feiras orgânicas, oficinas) onde os usuários podem confirmar presença e obter informações de localização.
 
 ---
 
-## 5. Restrições  
-- O projeto deve priorizar tecnologias de código aberto quando possível.  
-- O desenvolvimento inicial será focado na cidade de Fortaleza, com possibilidade de expansão para outras localidades.  
+## 4. Histórias de Usuário
+
+Essas histórias descrevem a motivação por trás de cada funcionalidade, conectando os requisitos diretamente com as necessidades dos usuários:
+
+* **HU01 – Localizar Ecoponto:** Como a **Maria**, eu quero localizar o ecoponto mais próximo, para que eu possa descartar minhas garrafas plásticas corretamente.
+* **HU02 – Criar Meu Jardim:** Como o **Carlos**, eu quero cadastrar as plantas que tenho, para que eu possa acompanhar o desenvolvimento delas e saber como cuidar.
+* **HU03 – Compartilhar Dica:** Como a **Maria**, eu quero publicar fotos da minha horta, para que eu possa compartilhar dicas de cultivo com a comunidade.
+* **HU04 – Saber o que Reciclar:** Como a **Ana**, eu quero saber o que fazer com óleo de cozinha usado, para que eu não descarte de forma incorreta.
 
 ---
 
-## 6. Critérios de Aceitação  
-- O usuário deve conseguir localizar pontos de coleta de resíduos em até 3 interações.  
-- O sistema deve enviar pelo menos uma notificação semanal com dicas de sustentabilidade.  
-- O aplicativo deve ser testado em dispositivos com diferentes resoluções de tela para garantir responsividade.  
+## 5. Regras de Negócio
+
+Estas regras definem as políticas e os processos que governam as funcionalidades do aplicativo:
+
+* **RN01:** Todo novo usuário deve se cadastrar com e-mail válido e senha, aceitando os termos de uso.
+* **RN02:** Posts com linguagem ofensiva ou que infrinjam os termos de uso serão moderados e removidos pelos administradores.
+* **RN03:** A localização dos pontos de coleta de resíduos deve ser verificada e atualizada mensalmente por um administrador para garantir a precisão das informações.
+* **RN04:** As notificações sobre cuidados com as plantas devem ser enviadas apenas para os usuários que optarem por essa funcionalidade.
 
 ---
+
+## 6. Requisitos Não-Funcionais (RNF)
+
+Estes requisitos especificam como o sistema deve funcionar, focando em suas qualidades:
+
+* **RNF01 – Usabilidade:** A interface deve ser simples, intuitiva e acessível para usuários de todas as faixas etárias, seguindo as diretrizes de acessibilidade (WCAG 2.1).
+* **RNF02 – Desempenho:** O aplicativo deve carregar em no máximo 5 segundos em uma conexão 4G e responder às ações do usuário em menos de 1 segundo.
+* **RNF03 – Segurança:** O sistema deve proteger os dados pessoais dos usuários em conformidade com a LGPD e criptografar as senhas armazenadas no banco de dados.
+* **RNF04 – Portabilidade:** O aplicativo deve funcionar em dispositivos Android (versão 9 ou superior) e iOS (versão 14 ou superior).
+* **RNF05 – Manutenibilidade:** O código-fonte deve ser modular e bem documentado, permitindo que a equipe de desenvolvimento adicione novas funcionalidades e corrija bugs com facilidade.
+
+---
+
+## 7. Restrições e Critérios de Aceitação
+
+* **Restrição:** O projeto inicial será focado exclusivamente em dados da cidade de Fortaleza, com a arquitetura preparada para uma futura expansão para outras cidades.
+* **Critério de Aceitação:** Para que o projeto seja considerado concluído, o usuário deve conseguir cadastrar uma planta e receber uma notificação de cuidado em até 24 horas.
+* **Critério de Aceitação:** O aplicativo deve ser testado em um mínimo de três modelos de smartphones diferentes (Android e iOS) para garantir a compatibilidade e a qualidade da experiência do usuário.
+
+
+
+
+
