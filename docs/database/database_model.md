@@ -196,4 +196,78 @@ erDiagram
         string url_conteudo
         string categoria
     }
-```
+---
+
+### 4. Dicionário de Dados
+
+Esta seção detalha cada campo (coluna) das tabelas, especificando o tipo de dado, restrições e uma breve descrição para garantir a uniformidade e a clareza na implementação do banco de dados.
+
+#### Tabela: `Usuario`
+
+| Campo | Tipo de Dado | Restrições | Descrição |
+| :--- | :--- | :--- | :--- |
+| `id_usuario` | `INT` | PK, AUTO_INCREMENT | Chave primária. Identificador único do usuário. |
+| `nome` | `VARCHAR(100)` | NOT NULL | Nome completo do usuário. |
+| `email` | `VARCHAR(150)` | NOT NULL, UNIQUE | Endereço de e-mail do usuário. Usado como login. |
+| `senha_hash` | `VARCHAR(255)` | NOT NULL | Senha criptografada por segurança. |
+| `data_cadastro` | `DATETIME` | NOT NULL | Data e hora em que o usuário se registrou. |
+
+#### Tabela: `PontoColeta`
+
+| Campo | Tipo de Dado | Restrições | Descrição |
+| :--- | :--- | :--- | :--- |
+| `id_ponto` | `INT` | PK, AUTO_INCREMENT | Chave primária. Identificador único do ponto de coleta. |
+| `nome_local` | `VARCHAR(100)` | NOT NULL | Nome do local (ex.: Ecoponto, Ponto de Coleta). |
+| `endereco` | `VARCHAR(255)` | | Endereço completo do ponto. |
+| `latitude` | `DECIMAL(10, 8)` | NOT NULL | Coordenada geográfica para localização no mapa. |
+| `longitude` | `DECIMAL(11, 8)` | NOT NULL | Coordenada geográfica para localização no mapa. |
+| `horario_funcionamento`| `VARCHAR(255)` | | Horário de atendimento do local (texto livre). |
+
+#### Tabela: `Residuo`
+
+| Campo | Tipo de Dado | Restrições | Descrição |
+| :--- | :--- | :--- | :--- |
+| `id_residuo` | `INT` | PK, AUTO_INCREMENT | Chave primária. Identificador único do tipo de resíduo. |
+| `nome_tipo` | `VARCHAR(50)` | NOT NULL | Nome do resíduo (ex.: Plástico, Óleo, Vidro). |
+| `descricao` | `TEXT` | | Descrição detalhada sobre o material e seu descarte. |
+
+#### Tabela: `Planta`
+
+| Campo | Tipo de Dado | Restrições | Descrição |
+| :--- | :--- | :--- | :--- |
+| `id_planta` | `INT` | PK, AUTO_INCREMENT | Chave primária. Identificador único da planta. |
+| `id_usuario` | `INT` | FK, NOT NULL | Chave estrangeira para `Usuario`. Relaciona a planta ao seu dono. |
+| `nome_popular` | `VARCHAR(100)` | NOT NULL | Nome comum da planta. |
+| `nome_cientifico` | `VARCHAR(100)` | | Nome científico da planta (opcional). |
+| `data_plantio` | `DATE` | | Data em que a planta foi plantada. |
+
+#### Tabela: `DicaSustentavel`
+
+| Campo | Tipo de Dado | Restrições | Descrição |
+| :--- | :--- | :--- | :--- |
+| `id_dica` | `INT` | PK, AUTO_INCREMENT | Chave primária. Identificador único da dica. |
+| `id_usuario` | `INT` | FK, NOT NULL | Chave estrangeira para `Usuario`. Relaciona a dica ao seu autor. |
+| `descricao` | `TEXT` | NOT NULL | Conteúdo da dica sustentável. |
+| `data_publicacao` | `DATETIME` | NOT NULL | Data e hora da publicação da dica. |
+
+#### Tabela: `Evento`
+
+| Campo | Tipo de Dado | Restrições | Descrição |
+| :--- | :--- | :--- | :--- |
+| `id_evento` | `INT` | PK, AUTO_INCREMENT | Chave primária. Identificador único do evento. |
+| `titulo` | `VARCHAR(150)` | NOT NULL | Título do evento. |
+| `descricao` | `TEXT` | NOT NULL | Descrição detalhada do evento. |
+| `data_evento` | `DATETIME` | NOT NULL | Data e hora de início do evento. |
+| `local` | `VARCHAR(255)` | NOT NULL | Endereço ou nome do local onde o evento ocorrerá. |
+
+#### Tabela: `ConteudoEducativo`
+
+| Campo | Tipo de Dado | Restrições | Descrição |
+| :--- | :--- | :--- | :--- |
+| `id_conteudo` | `INT` | PK, AUTO_INCREMENT | Chave primária. Identificador único do conteúdo. |
+| `titulo` | `VARCHAR(150)` | NOT NULL | Título do artigo ou vídeo. |
+| `descricao` | `TEXT` | | Descrição ou resumo do conteúdo. |
+| `url_conteudo` | `VARCHAR(255)` | | URL para o conteúdo (vídeo, artigo externo). |
+| `categoria` | `VARCHAR(50)` | | Categoria do conteúdo (ex.: "reciclagem"). |
+
+---
