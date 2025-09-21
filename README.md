@@ -72,7 +72,7 @@ O sistema é composto por frontend (web e mobile), backend, APIs externas e banc
 - 
 ---
 
-### 7. Proposta de Cronograma para a Etapa 2 (N708)
+### 6. Proposta de Cronograma para a Etapa 2 (N708)
 
 Este cronograma foi planejado para a Etapa 2 do projeto, com duração total de **4 semanas**. As atividades estão otimizadas, considerando que as APIs de terceiros já estão configuradas e prontas para integração.
 
@@ -95,15 +95,7 @@ Este cronograma foi planejado para a Etapa 2 do projeto, com duração total de 
 
 ---
 
-### Análise de Viabilidade
-
-O cronograma revisado é **altamente viável** e demonstra um planejamento eficiente. A remoção da etapa de configuração das APIs permite que a equipe se concentre no desenvolvimento de funcionalidades e em testes mais rigorosos. A alocação de tempo para cada fase é realista e segue uma sequência lógica para o desenvolvimento do projeto.
-
----
-
-## 8. Integrantes da Equipe e seus papeis
-
-## Integrantes da Equipe e Papéis
+## 7. Integrantes da Equipe e seus papeis
 
 | Nome | Matrícula | Função |
 | :--- | :--- | :--- |
