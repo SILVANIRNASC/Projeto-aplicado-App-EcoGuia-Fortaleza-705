@@ -69,7 +69,6 @@ O sistema é composto por frontend (web e mobile), backend, APIs externas e banc
 - **APIs**: Groq Cloud API, OpenWeatherMap API.  
 - **Prototipação**: Figma.  
 - **Documentação**: Markdown no GitHub.
-- 
 ---
 
 ### 6. Proposta de Cronograma para a Etapa 2 (N708)
