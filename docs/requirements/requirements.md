@@ -25,8 +25,7 @@ Os requisitos a seguir descrevem as funcionalidades que o aplicativo deve oferec
 * **RF03 – Cadastro e Monitoramento de Plantas:** O usuário deve poder cadastrar plantas em seu "jardim virtual", com informações como nome popular, nome científico e data de plantio.
 * **RF04 – Calendário de Cuidados:** O sistema deve gerar um calendário personalizado de cuidados para cada planta cadastrada, incluindo alertas para rega, adubação e poda.
 * **RF05 – Conteúdo Educativo:** O aplicativo deve disponibilizar uma biblioteca de conteúdos educativos sobre sustentabilidade, como artigos, vídeos e infográficos sobre compostagem, jardinagem e reciclagem.
-* **RF06 – Rede Social:** O sistema deve permitir que usuários publiquem posts com textos e fotos, interajam com as postagens de outros usuários (curtir, comentar) e sigam outros perfis.
-* **RF07 – Eventos Comunitários:** O aplicativo deve ter um calendário de eventos comunitários (mutirões de limpeza, feiras orgânicas, oficinas) onde os usuários podem confirmar presença e obter informações de localização.
+* **RF06 – Eventos Comunitários:** O aplicativo deve ter um calendário de eventos comunitários (mutirões de limpeza, feiras orgânicas, oficinas) onde os usuários podem confirmar presença e obter informações de localização.
 
 ---
 
