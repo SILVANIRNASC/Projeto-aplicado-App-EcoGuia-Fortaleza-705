@@ -70,6 +70,22 @@ Estes requisitos especificam como o sistema deve funcionar, focando em suas qual
 * **Critério de Aceitação:** Para que o projeto seja considerado concluído, o usuário deve conseguir cadastrar uma planta e receber uma notificação de cuidado em até 24 horas.
 * **Critério de Aceitação:** O aplicativo deve ser testado em um mínimo de três modelos de smartphones diferentes (Android e iOS) para garantir a compatibilidade e a qualidade da experiência do usuário.
 
+---
+
+## 8. Glossário e Definições
+
+Esta seção lista os termos técnicos e específicos utilizados neste documento, visando garantir a clareza e o alinhamento de toda a equipe do projeto.
+
+* **Compostagem:** Processo biológico de decomposição da matéria orgânica, como restos de alimentos e folhas, transformando-a em adubo natural.
+
+* **LGPD (Lei Geral de Proteção de Dados):** Legislação brasileira que regula a coleta, o armazenamento e o tratamento de dados pessoais.
+
+* **WCAG 2.1 (Web Content Accessibility Guidelines 2.1):** Conjunto de diretrizes internacionais para tornar conteúdos da internet acessíveis a pessoas com deficiência.
+
+* **UX (User Experience - Experiência do Usuário):** Foco na forma como o usuário interage com um produto, abrangendo sentimentos, atitudes e percepções.
+
+* **UI (User Interface - Interface do Usuário):** Foco nos elementos visuais do produto, como cores, botões e tipografia, que permitem a interação do usuário.
+
 
 
 
