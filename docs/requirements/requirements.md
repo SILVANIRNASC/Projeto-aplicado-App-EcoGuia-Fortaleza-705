@@ -11,7 +11,7 @@ O **App Sustentável Fortaleza** é uma plataforma com o objetivo de auxiliar a 
 Para garantir que o aplicativo atenda às necessidades de seu público, definimos os seguintes perfis de usuário:
 
 * **Maria, a Engajada Ambiental:** Jovem de 25 anos, estudante, moradora da área de lazer do Cocó. Quer encontrar pontos de coleta de lixo eletrônico, participar de ações de limpeza de praias e trocar dicas de sustentabilidade. Usa o celular para tudo e valoriza aplicativos com design intuitivo e comunidades ativas.
-* **Carlos, o Jardineiro Iniciante:** Homem de 45 anos, pai de família, morador do Meireles. Começou a cultivar uma horta em casa e precisa de ajuda para saber como cuidar das plantas, fazer compostagem e identificar pragas. Não tem muito tempo, então precisa de informações rápidas e diretas.
+* **Carlos, o Jardineiro Iniciante:** Homem de 45 anos, pai de família, morador do Messejana. Começou a cultivar uma horta em casa e precisa de ajuda para saber como cuidar das plantas, fazer compostagem e identificar pragas. Não tem muito tempo, então precisa de informações rápidas e diretas.
 * **Ana, a Zeladora do Lar:** Mulher de 60 anos, aposentada, moradora do bairro Parangaba. Sempre reciclou e quer achar um jeito fácil de saber onde descartar resíduos específicos, como óleo de cozinha e pilhas, sem ter que ir longe de casa. Prefere interfaces simples e com textos em letras maiores.
 
 ---
