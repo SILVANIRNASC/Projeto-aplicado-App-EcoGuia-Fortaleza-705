@@ -68,22 +68,35 @@ O sistema é composto por frontend (web e mobile), backend, APIs externas e banc
 - **Banco de Dados**: PostgreSQL.  
 - **APIs**: Groq Cloud API, OpenWeatherMap API.  
 - **Prototipação**: Figma.  
-- **Documentação**: Markdown no GitHub.  
+- **Documentação**: Markdown no GitHub.
+- 
+---
+
+### 7. Proposta de Cronograma para a Etapa 2 (N708)
+
+Este cronograma foi planejado para a Etapa 2 do projeto, com duração total de **4 semanas**. As atividades estão divididas para garantir uma progressão lógica e eficiente no desenvolvimento da solução.
+
+| **Semana** | **Atividade** | **Descrição Detalhada** |
+| :--- | :--- | :--- |
+| **Semana 1** | **Configuração e Desenvolvimento Inicial** | Configurar o ambiente de desenvolvimento, banco de dados e as primeiras funcionalidades do backend. |
+| | | - **Dia 1-3:** Configuração do ambiente de desenvolvimento (Node.js, Express.js). Instalação de dependências e ferramentas necessárias. |
+| | | - **Dia 4-5:** Configuração do banco de dados (ex: MySQL/PostgreSQL). Criação do modelo de dados inicial (tabelas de usuário, resíduos, etc.). |
+| | | - **Dia 6-7:** Desenvolvimento dos primeiros **endpoints da API** (ex: cadastro e login de usuário). |
+| **Semana 2** | **Desenvolvimento Frontend e Backend** | Foco na construção da interface do usuário e na continuidade do backend. |
+| | | - **Dia 1-4:** Desenvolvimento das telas principais do aplicativo (home, busca de ecopontos) no frontend. |
+| | | - **Dia 5-7:** Criação dos endpoints do backend para buscar dados de resíduos e pontos de coleta. |
+| **Semana 3** | **Integração de APIs e Testes Iniciais** | Conectar a solução às APIs de terceiros e realizar os primeiros testes. |
+| | | - **Dia 1-3:** Integração com a **Groq Cloud API** para a funcionalidade de chatbot. Desenvolvimento da lógica de comunicação e tratamento de respostas. |
+| | | - **Dia 4-5:** Integração com a **OpenWeatherMap API** para dados climáticos (opcional). |
+| | | - **Dia 6-7:** Realização de **testes de integração** entre frontend e backend para os endpoints básicos (login, busca). |
+| **Semana 4** | **Testes Finais, Refinamentos e Documentação** | Etapa final para garantir a qualidade do produto e documentar o processo. |
+| | | - **Dia 1-3:** Realização de **testes de usabilidade** e **testes de aceitação** para garantir que as funcionalidades atendem aos requisitos. Correção de bugs. |
+| | | - **Dia 4-5:** Refinamento da interface do usuário (UI) e experiência do usuário (UX) com base nos feedbacks dos testes. |
+| | | - **Dia 6-7:** **Documentação final** da API e do código. Preparação para a entrega da Etapa 2. |
 
 ---
 
-## 6. Cronograma da Etapa 2 (N708)
-
-| Semana | Atividade |
-|--------|------------|
-| 1 | Configuração do backend e banco de dados |
-| 2 | Desenvolvimento do frontend inicial |
-| 3 | Integração das APIs externas |
-| 4 | Testes e ajustes finais |
-
----
-
-## 7. Integrantes da Equipe e seus papeis
+## 8. Integrantes da Equipe e seus papeis
 
 ## Integrantes da Equipe e Papéis
 
