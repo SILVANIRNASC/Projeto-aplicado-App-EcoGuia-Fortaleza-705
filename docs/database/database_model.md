@@ -1,8 +1,8 @@
-# Modelo de Dados – App Sustentável Fortaleza 🌱
+# Modelo de Dados – App EcoGuia Fortaleza 🌱
 
 ## 1\. Introdução
 
-Este documento detalha o **modelo de dados** do **App Sustentável Fortaleza**. Ele descreve as tabelas, os campos, os tipos de dados e os relacionamentos do banco de dados. O objetivo é criar uma base sólida para as funcionalidades do aplicativo, como cadastro de usuários, gestão de resíduos e engajamento comunitário.
+Este documento detalha o **modelo de dados** do **App EcoGuia Fortaleza**. Ele descreve as tabelas, os campos, os tipos de dados e os relacionamentos do banco de dados. O objetivo é criar uma base sólida para as funcionalidades do aplicativo, como cadastro de usuários, gestão de resíduos e engajamento comunitário.
 
 -----
 
