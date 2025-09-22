@@ -1,6 +1,6 @@
-# Especificação da API – App Sustentável Fortaleza 🌿
+# Especificação da API – App EcoGuia Fortaleza 🌿
 
-Este documento detalha a especificação técnica da API **App Sustentável Fortaleza**, incluindo seus endpoints, formatos de requisição e resposta, e os mecanismos de autenticação. Ele serve como um guia para desenvolvedores que precisam integrar sistemas com esta API.
+Este documento detalha a especificação técnica da API **App EcoGuia Fortaleza**, incluindo seus endpoints, formatos de requisição e resposta, e os mecanismos de autenticação. Ele serve como um guia para desenvolvedores que precisam integrar sistemas com esta API.
 
 ## 1\. Endpoints Previstos
 
