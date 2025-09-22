@@ -1,12 +1,12 @@
-# Projeto-aplicado-App-Sustentavel-Fortaleza-705
+# Projeto-EcoGuia-Fortaleza-705
 Repositório do Projeto Aplicado N705 - Documentação técnica e protótipos.
 
-**Tema:** App Sustentável Fortaleza 🌱
+**Tema:** App EcoGuia Fortaleza 🌱
 
 ---
 
 ## 1. Introdução
-O projeto *App Sustentável Fortaleza* contribui diretamente para a ODS 11 – Cidades e Comunidades Sustentáveis, ao propor soluções que favorecem o desenvolvimento urbano de forma inclusiva, segura, resiliente e sustentável. A iniciativa busca engajar a população na gestão consciente dos resíduos e no incentivo à jardinagem urbana, aproximando os cidadãos de práticas que fortalecem a relação entre qualidade de vida e preservação ambiental.
+O projeto *App EcoGuia Fortaleza* contribui diretamente para a ODS 11 – Cidades e Comunidades Sustentáveis, ao propor soluções que favorecem o desenvolvimento urbano de forma inclusiva, segura, resiliente e sustentável. A iniciativa busca engajar a população na gestão consciente dos resíduos e no incentivo à jardinagem urbana, aproximando os cidadãos de práticas que fortalecem a relação entre qualidade de vida e preservação ambiental.
 
 Por meio da integração de educação ambiental, descarte correto de resíduos e engajamento comunitário, o aplicativo incentiva comportamentos que reduzem impactos negativos no meio ambiente urbano, como o acúmulo de lixo em vias públicas, a poluição de solos e águas, além da emissão de gases associados à decomposição inadequada de resíduos. Dessa forma, a proposta pode promover uma cidade mais limpa, organizada e ambientalmente equilibrada.
 
@@ -33,7 +33,7 @@ Desenvolver uma plataforma multiplataforma (web e mobile) que promova:
 
 ## 3. Escopo do Projeto
 
-O sistema **App Sustentável Fortaleza** tem como objetivo apoiar práticas de sustentabilidade urbana, integrando jardinagem comunitária e descarte correto de resíduos.  
+O sistema **App EcoGuia Fortaleza** tem como objetivo apoiar práticas de sustentabilidade urbana, integrando jardinagem comunitária e descarte correto de resíduos.  
 
 ### 3.1 Escopo Incluído
 - Cadastro de usuários e perfis.  
