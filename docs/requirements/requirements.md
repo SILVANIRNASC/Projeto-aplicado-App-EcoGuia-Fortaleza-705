@@ -1,8 +1,8 @@
-# Requirements – App Sustentável Fortaleza 🌱
+# Requirements – App EcoGuia Fortaleza 🌱
 
 ## 1. Introdução
 
-O **App Sustentável Fortaleza** é uma plataforma com o objetivo de auxiliar a população na gestão de resíduos, incentivar a jardinagem urbana e promover o engajamento comunitário em iniciativas sustentáveis. Este documento detalha os requisitos e as funcionalidades do sistema, servindo como guia para as equipes de desenvolvimento, design e testes.
+O **App EcoGuia Fortaleza** é uma plataforma com o objetivo de auxiliar a população na gestão de resíduos, incentivar a jardinagem urbana e promover o engajamento comunitário em iniciativas sustentáveis. Este documento detalha os requisitos e as funcionalidades do sistema, servindo como guia para as equipes de desenvolvimento, design e testes.
 
 ---
 
