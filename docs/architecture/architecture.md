@@ -1,8 +1,8 @@
-# Arquitetura do Sistema – App Sustentável Fortaleza 🌱
+# Arquitetura do Sistema – App EcoGuia Fortaleza 🌱
 
 ## 1\. Visão Geral da Arquitetura
 
-A arquitetura do **App Sustentável Fortaleza** é baseada no modelo **Cliente-Servidor**. Ela foi projetada para ser **multiplataforma**, **escalável** e **modular**,  o sistema é dividido em componentes distintos para facilitar o desenvolvimento e a manutenção.
+A arquitetura do **App EcoGuia Fortaleza** é baseada no modelo **Cliente-Servidor**. Ela foi projetada para ser **multiplataforma**, **escalável** e **modular**,  o sistema é dividido em componentes distintos para facilitar o desenvolvimento e a manutenção.
 
 O sistema é composto por três camadas principais:
 
