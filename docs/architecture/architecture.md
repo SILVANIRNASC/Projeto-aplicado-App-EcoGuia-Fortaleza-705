@@ -45,7 +45,7 @@ A camada de dados é responsável pela persistência das informações e por int
 
 ## 3\. Diagrama de Arquitetura
 
-![Diagrama de Arquitetura](./documentos/arquitetura/Arquitetura_EcoGuia_Fortaleza.drawio.png)
+![Diagrama de Arquitetura](Arquitetura_EcoGuia_Fortaleza.drawio.png)
 
 -----
 
