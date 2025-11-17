@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoGuia Fortaleza</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'brand-green': {
+              light: '#E6F4F1',
+              DEFAULT: '#4CAF50',
+              dark: '#388E3C',
+            },
+            'brand-blue': {
+              light: '#EBF5FF',
+              DEFAULT: '#2196F3',
+              dark: '#1976D2',
+            },
+            'brand-gray': {
+              light: '#F7FAFC',
+              DEFAULT: '#EDF2F7',
+              dark: '#A0AEC0',
+            }
+          },
+        },
+      },
+    }
+  </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+    "react/": "https://aistudiocdn.com/react@^19.1.1/",
+    "react": "https://aistudiocdn.com/react@^19.1.1",
+    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.2"
+  }
+}
+</script>
+  <link rel="stylesheet" href="/index.css">
+</head>
+
+<body class="bg-brand-gray-light">
+  <div id="root"></div>
+  <script type="module" src="/src/index.tsx"></script>
+</body>
+
+</html>
