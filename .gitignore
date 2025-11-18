@@ -36,7 +36,6 @@ dist-ssr
 
 
 # Ignorar pastas dos outros times e do projeto
-/backend
 /database
 /docs
 /validation
