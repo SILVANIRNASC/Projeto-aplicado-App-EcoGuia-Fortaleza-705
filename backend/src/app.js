@@ -10,6 +10,7 @@ const askController = require("./controllers/askController");
 const weatherController = require("./controllers/weatherController");
 
 const usuarioRoutes = require("./routes/usuarioRoutes");
+const plantaRoutes = require("./routes/plantaRoutes");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -27,6 +28,7 @@ app.get("/api/weather", weatherController.getWeatherData);
 
 // Rotas do Banco de Dados
 app.use("/api/usuarios", usuarioRoutes);
+app.use("/api/plantas", plantaRoutes);
 
 // Middleware para tratamento de rotas não encontradas (404)
 app.use((req, res, next) => {
