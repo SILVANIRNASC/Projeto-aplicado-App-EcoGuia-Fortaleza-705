@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { PlantIcon, CloseIcon, CalendarIcon } from '../components/icons';
-import { mockTips } from '../data'; // Dicas continuam mockadas por enquanto
 import { Tip } from '../types';
 
-// Interface para os dados que vêm do Banco de Dados
+// Interfaces utilizadas para mapear os dados retornados do backend
 interface PlantDB {
   id_planta: number;
   id_usuario: number;
@@ -20,20 +19,31 @@ interface PlantDB {
   ultima_poda: string;
 }
 
+interface TipDB {
+  id_dica: number;
+  id_usuario: number;
+  descricao: string;
+  autor: string;
+  data_formatada: string;
+}
+
 const GardeningPage: React.FC = () => {
-  // Estados das Plantas
+  // Estados principais da aplicação
   const [plants, setPlants] = useState<PlantDB[]>([]);
   const [isLoadingPlants, setIsLoadingPlants] = useState(true);
 
-  const [tips, setTips] = useState<Tip[]>(mockTips);
+  const [tips, setTips] = useState<TipDB[]>([]);
   const [newTip, setNewTip] = useState('');
+  const [postingTip, setPostingTip] = useState(false);
 
-  // Estados do Formulário de Cadastro
+  // Modais
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
   const [selectedPlant, setSelectedPlant] = useState<PlantDB | null>(null);
 
   const [saving, setSaving] = useState(false);
+
+  // Formulário de cadastro de planta
   const [formData, setFormData] = useState({
     nome_popular: '',
     nome_cientifico: '',
@@ -41,87 +51,113 @@ const GardeningPage: React.FC = () => {
     frequencia_rega: 3
   });
 
-  // BUSCAR PLANTAS DO BANCO
+  const API_BASE_URL = 'http://localhost:3008/api';
+
+  // Carrega as plantas do usuário (ID fixo para testes)
   const fetchPlants = async () => {
     try {
-      // Usando ID 6 fixo como combinamos nos testes
-      const response = await fetch('http://localhost:3008/api/plantas/usuario/6');
+      const response = await fetch(`${API_BASE_URL}/plantas/usuario/6`);
       if (response.ok) {
-        const data = await response.json();
-        setPlants(data);
-      } else {
-        console.error('Erro ao buscar plantas');
+        setPlants(await response.json());
       }
     } catch (error) {
-      console.error('Erro de conexão:', error);
+      console.error('Erro ao buscar plantas:', error);
     } finally {
       setIsLoadingPlants(false);
     }
   };
 
-  // Chama a busca assim que a tela carrega
+  // Carrega as dicas publicadas
+  const fetchTips = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/dicas`);
+      if (response.ok) {
+        setTips(await response.json());
+      }
+    } catch (error) {
+      console.error('Erro ao buscar dicas:', error);
+    }
+  };
+
   useEffect(() => {
     fetchPlants();
+    fetchTips();
   }, []);
 
-  // REGAR PLANTA
+  // Atualiza somente a data da última rega
   const handleRegar = async (id_planta: number) => {
     try {
-      const response = await fetch(`http://localhost:3008/api/plantas/${id_planta}/cuidado`, {
+      const response = await fetch(`${API_BASE_URL}/plantas/${id_planta}/cuidado`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tipo_cuidado: 'rega' })
       });
 
       if (response.ok) {
-        // Atualiza a lista para recalcular os dias
-        fetchPlants(); 
-        alert('Planta regada! 💧 As datas foram atualizadas.');
+        fetchPlants(); // Recarrega lista para recalcular status
       }
-    } catch (error) {
+    } catch {
       alert('Erro ao conectar com o servidor.');
     }
   };
 
-  // SALVAR NOVA PLANTA (POST)
+  // Salva uma nova planta
   const handleSavePlant = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
 
     try {
-      const response = await fetch('http://localhost:3008/api/plantas', {
+      const response = await fetch(`${API_BASE_URL}/plantas`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          id_usuario: 6, // ID fixo
+          id_usuario: 6,
           ...formData
         })
       });
 
       if (response.ok) {
-        alert('Planta cadastrada com sucesso! 🌱');
-        setIsModalOpen(false); // Fecha o modal
-        setFormData({ nome_popular: '', nome_cientifico: '', data_plantio: '' , frequencia_rega: 3}); // Limpa form
-        fetchPlants(); // Atualiza a lista na tela
-      } else {
-        alert('Erro ao salvar planta.');
+        setIsModalOpen(false);
+        setFormData({ nome_popular: '', nome_cientifico: '', data_plantio: '', frequencia_rega: 3 });
+        fetchPlants();
       }
     } catch (error) {
-      console.error(error);
-      alert('Erro de conexão.');
+      console.error('Erro ao cadastrar planta:', error);
     } finally {
       setSaving(false);
     }
   };
 
+  // Publica uma nova dica na comunidade
+  const handleAddTip = async () => {
+    if (!newTip.trim()) return;
+    setPostingTip(true);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/dicas`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id_usuario: 6, descricao: newTip })
+      });
+
+      if (response.ok) {
+        setNewTip('');
+        fetchTips();
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setPostingTip(false);
+    }
+  };
+
+  // Abre modal de calendário
   const openCalendar = (plant: PlantDB) => {
     setSelectedPlant(plant);
     setIsCalendarModalOpen(true);
   };
 
-  // Função auxiliar para calcular data futura no front (para o modal de calendário)
+  // Calcula a próxima data de cuidado baseado na última e no intervalo
   const calcularProximaData = (ultimaData: string, dias: number) => {
     if (!ultimaData) return 'Nunca';
     const data = new Date(ultimaData);
@@ -129,34 +165,21 @@ const GardeningPage: React.FC = () => {
     return data.toLocaleDateString('pt-BR');
   };
 
-  // Função auxiliar para verificar se já regou hoje
+  // Evita mostrar botão de rega caso já tenha sido regada no dia
   const foiRegadoHoje = (dataString: string) => {
     if (!dataString) return false;
     const hoje = new Date();
     const dataRega = new Date(dataString);
-    
-    return hoje.getDate() === dataRega.getDate() &&
-           hoje.getMonth() === dataRega.getMonth() &&
-           hoje.getFullYear() === dataRega.getFullYear();
-  };
-
-  // Lógica de Dicas (Mantida do original)
-  const handleAddTip = () => {
-    if (newTip.trim()) {
-      const tip: Tip = {
-        id: tips.length + 1,
-        author: 'Você',
-        avatar: `https://picsum.photos/seed/you/40/40`,
-        content: newTip,
-      };
-      setTips([tip, ...tips]);
-      setNewTip('');
-    }
+    return (
+      hoje.getDate() === dataRega.getDate() &&
+      hoje.getMonth() === dataRega.getMonth() &&
+      hoje.getFullYear() === dataRega.getFullYear()
+    );
   };
 
   return (
     <main className="flex-1 relative">
-      {/* Hero Header */}
+      {/* Layout e renderização da página */}
       <div className="bg-green-50 border-b border-green-100">
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold text-gray-900 flex items-center">
@@ -170,7 +193,6 @@ const GardeningPage: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        {/* Botão de Adicionar Planta */}
         <div className="flex justify-end mb-6">
           <button 
             onClick={() => setIsModalOpen(true)}
@@ -181,7 +203,6 @@ const GardeningPage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* COLUNA DA ESQUERDA: LISTA DE PLANTAS */}
           <div className="lg:col-span-2">
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">Minhas Plantas ({plants.length})</h2>
             
@@ -254,26 +275,41 @@ const GardeningPage: React.FC = () => {
                 rows={3}
                 placeholder="Escreva aqui uma dica sustentável..."
               ></textarea>
-              <button onClick={handleAddTip} className="mt-3 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">
-                Publicar Dica
+              <button 
+                onClick={handleAddTip} 
+                disabled={postingTip}
+                className="mt-3 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition-colors disabled:opacity-50"
+              >
+                {postingTip ? 'Publicando...' : 'Publicar Dica'}
               </button>
             </div>
-            <div className="space-y-4">
-              {tips.map((tip) => (
-                <div key={tip.id} className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex items-start">
-                  <img src={tip.avatar} alt={tip.author} className="w-10 h-10 rounded-full mr-4" />
-                  <div>
-                    <p className="text-sm text-gray-800">{tip.content}</p>
-                    <p className="text-xs text-gray-500 mt-1">- {tip.author}</p>
+            
+            <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
+              {tips.length === 0 ? (
+                 <p className="text-gray-500 text-center text-sm">Nenhuma dica ainda. Seja o primeiro!</p>
+              ) : (
+                 tips.map((tip) => (
+                  <div key={tip.id_dica} className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex items-start animate-fade-in-up">
+                     <img 
+                        src={`https://ui-avatars.com/api/?name=${encodeURIComponent(tip.autor)}&background=0D9488&color=fff`} 
+                        alt={tip.autor} 
+                        className="w-10 h-10 rounded-full mr-3 flex-shrink-0 shadow-sm"
+                    />
+                    <div className="flex-1">
+                      <p className="text-sm text-gray-800 whitespace-pre-wrap">{tip.descricao}</p>
+                      <div className="flex justify-between items-center mt-2">
+                         <p className="text-xs text-gray-500 font-semibold">- {tip.autor}</p>
+                         <p className="text-[10px] text-gray-400">{tip.data_formatada}</p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      {/* MODAL (POPUP) DE CADASTRO */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden animate-fade-in-up">
@@ -307,7 +343,6 @@ const GardeningPage: React.FC = () => {
         </div>
       )}
     
-      {/* MODAL DE CALENDÁRIO */}
       {isCalendarModalOpen && selectedPlant && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden animate-fade-in-up">
@@ -323,7 +358,6 @@ const GardeningPage: React.FC = () => {
               <p className="text-sm text-gray-500 mb-6 italic">{selectedPlant.nome_cientifico}</p>
 
               <div className="space-y-4">
-                {/* CARD DE REGA */}
                 <div className="flex items-center bg-blue-50 p-3 rounded-lg border border-blue-100">
                   <div className="bg-blue-100 p-2 rounded-full mr-3">
                     <span role="img" aria-label="water">💧</span>
@@ -339,7 +373,6 @@ const GardeningPage: React.FC = () => {
                   </div>
                 </div>
 
-                {/* CARD DE ADUBAÇÃO */}
                 <div className="flex items-center bg-yellow-50 p-3 rounded-lg border border-yellow-100">
                   <div className="bg-yellow-100 p-2 rounded-full mr-3">
                     <span role="img" aria-label="fertilizer">💊</span>
@@ -355,7 +388,6 @@ const GardeningPage: React.FC = () => {
                   </div>
                 </div>
 
-                {/* CARD DE PODA */}
                 <div className="flex items-center bg-green-50 p-3 rounded-lg border border-green-100">
                   <div className="bg-green-100 p-2 rounded-full mr-3">
                     <span role="img" aria-label="prune">✂️</span>
