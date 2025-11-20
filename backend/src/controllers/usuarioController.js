@@ -1,4 +1,5 @@
 const pool = require("../config/db");
+const bcrypt = require('bcrypt');
 const { verificarConquista } = require('../utils/gamification');
 
 // Listar todos os usuários
@@ -16,9 +17,14 @@ exports.listarUsuarios = async (req, res) => {
 exports.criarUsuario = async (req, res) => {
   const { nome, email, senha_hash, bairro, cidade, estado, telefone } = req.body;
   try {
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(senha_hash, saltRounds);
+
     const query =
       "INSERT INTO usuarios (nome, email, senha_hash, bairro, cidade, estado, telefone) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *";
-    const values = [nome, email, senha_hash, bairro, cidade, estado, telefone];
+
+    const values = [nome, email, hashedPassword, bairro, cidade, estado, telefone];
+
     const novoUsuario = await pool.query(query, values);
     const usuario = novoUsuario.rows[0];
 
@@ -91,5 +97,39 @@ exports.atualizarUsuario = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Erro ao atualizar usuário" });
+    }
+};
+
+exports.login = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        // Busca o usuário pelo e-mail
+        const query = 'SELECT * FROM usuarios WHERE email = $1';
+        const result = await pool.query(query, [email]);
+
+        if (result.rows.length === 0) {
+            return res.status(401).json({ error: "E-mail ou senha incorretos." });
+        }
+
+        const usuario = result.rows[0];
+
+        // Compara a senha enviada com o Hash do banco
+        const senhaValida = await bcrypt.compare(password, usuario.senha_hash);
+
+        if (!senhaValida) {
+            return res.status(401).json({ error: "E-mail ou senha incorretos." });
+        }
+
+        delete usuario.senha_hash;
+        
+        res.json({
+            message: "Login realizado com sucesso!",
+            usuario: usuario
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Erro interno no servidor." });
     }
 };

@@ -46,6 +46,18 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ onLogout }) => {
+  const handleLogout = () => {
+    if (window.confirm("Deseja realmente sair do sistema?")) {
+        
+        localStorage.removeItem('user_id');
+        localStorage.removeItem('user_name');
+        
+        if (onLogout) onLogout();
+
+        window.location.href = '/';
+    }
+  };
+
   return (
     <header className="bg-white shadow-sm sticky top-0 z-10">
       {/* Main Header bar */}
@@ -79,7 +91,7 @@ const Header: React.FC<HeaderProps> = ({ onLogout }) => {
                     Perfil
                 </NavLink>
                 <button
-                  onClick={onLogout}
+                  onClick={handleLogout}
                   className="ml-4 text-gray-500 hover:text-gray-700"
                   title="Sair"
                 >
@@ -93,7 +105,7 @@ const Header: React.FC<HeaderProps> = ({ onLogout }) => {
           {/* Mobile Logout Button */}
           <div className="flex items-center md:hidden">
             <button
-              onClick={onLogout}
+              onClick={handleLogout}
               className="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-blue"
               title="Sair"
               aria-label="Sair da conta"

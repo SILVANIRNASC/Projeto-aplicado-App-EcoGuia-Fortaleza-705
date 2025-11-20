@@ -9,7 +9,7 @@ const DashboardCard = ({ icon, title, description, path }: { icon: React.ReactNo
       onClick={() => navigate(path)}
       className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-pointer flex flex-col items-center text-center group"
     >
-      <div className="bg-blue-50 text-blue-600 p-4 rounded-full mb-4 group-hover:bg-blue-100 transition-colors">
+      <div className="bg-blue-50 text-brand-blue p-4 rounded-full mb-4 group-hover:bg-blue-100 transition-colors">
         {icon}
       </div>
       <h3 className="text-lg font-semibold text-gray-800 mb-2">{title}</h3>
@@ -27,12 +27,24 @@ const DashboardPage = () => {
     daysActive: 0
   });
   const [loading, setLoading] = useState(true);
+  const [userName, setUserName] = useState('');
 
   // Buscando os dados do Backend
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const response = await fetch('http://localhost:3008/api/usuarios/6');
+        const userId = localStorage.getItem('user_id');
+        const storedName = localStorage.getItem('user_name');
+        
+        if (storedName) setUserName(storedName);
+
+        if (!userId) {
+            // Se não tiver ID, não faz o fetch (idealmente redirecionaria para login)
+            setLoading(false);
+            return;
+        }
+
+        const response = await fetch(`http://localhost:3008/api/usuarios/${userId}`);
         
         if (response.ok) {
           const data = await response.json();
@@ -64,14 +76,14 @@ const DashboardPage = () => {
       <div className="max-w-7xl mx-auto">
         {/* Hero Section */}
         <div className="bg-white text-center py-12 px-4 border-b border-gray-200">
-            <div className="inline-block bg-green-600 p-4 rounded-full mb-4 shadow-lg ring-4 ring-green-100">
+            <div className="inline-block bg-brand-blue p-4 rounded-full mb-4 shadow-lg ring-4 ring-blue-100">
                 <LeafIcon className="h-12 w-12 text-white" />
             </div>
-            <h1 className="text-4xl font-bold text-green-700">
+            <h1 className="text-4xl font-bold text-brand-green">
                 EcoGuia Fortaleza
             </h1>
             <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-                Transforme sua cidade em um lugar mais verde e sustentável. Cultive, recicle e cuide do meio ambiente de forma inteligente.
+              {userName ? `Olá, ${userName}! ` : ''}Transforme sua cidade em um lugar mais verde e sustentável. Cultive, recicle e cuide do meio ambiente de forma inteligente.
             </p>
         </div>
         
@@ -115,25 +127,25 @@ const DashboardPage = () => {
               ) : (
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-gray-100">
                     <div className="group">
-                        <p className="text-4xl font-bold text-green-600 mb-1 group-hover:scale-110 transition-transform">
+                        <p className="text-4xl font-bold text-brand-green mb-1 group-hover:scale-110 transition-transform">
                           {stats.plants}
                         </p>
                         <p className="text-gray-500 font-medium">Plantas</p>
                     </div>
                     <div className="group">
-                        <p className="text-4xl font-bold text-green-600 mb-1 group-hover:scale-110 transition-transform">
+                        <p className="text-4xl font-bold text-brand-green mb-1 group-hover:scale-110 transition-transform">
                           {stats.tips}
                         </p>
                         <p className="text-gray-500 font-medium">Dicas</p>
                     </div>
                     <div className="group">
-                        <p className="text-4xl font-bold text-blue-600 mb-1 group-hover:scale-110 transition-transform">
+                        <p className="text-4xl font-bold text-brand-blue mb-1 group-hover:scale-110 transition-transform">
                           {stats.points}
                         </p>
                         <p className="text-gray-500 font-medium">Pontos</p>
                     </div>
                     <div className="group">
-                        <p className="text-4xl font-bold text-blue-600 mb-1 group-hover:scale-110 transition-transform">
+                        <p className="text-4xl font-bold text-brand-blue mb-1 group-hover:scale-110 transition-transform">
                           {stats.daysActive}
                         </p>
                         <p className="text-gray-500 font-medium">Dias Ativo</p>

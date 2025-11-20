@@ -51,12 +51,16 @@ const GardeningPage: React.FC = () => {
     frequencia_rega: 3
   });
 
+  const userId = localStorage.getItem('user_id');
+
   const API_BASE_URL = 'http://localhost:3008/api';
 
   // Carrega as plantas do usuário (ID fixo para testes)
   const fetchPlants = async () => {
+    if (!userId) return;
+
     try {
-      const response = await fetch(`${API_BASE_URL}/plantas/usuario/6`);
+      const response = await fetch(`${API_BASE_URL}/plantas/usuario/${userId}`);
       if (response.ok) {
         setPlants(await response.json());
       }
@@ -104,6 +108,10 @@ const GardeningPage: React.FC = () => {
   // Salva uma nova planta
   const handleSavePlant = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!userId) {
+        alert("Usuário não identificado.");
+        return;
+    }
     setSaving(true);
 
     try {
@@ -111,7 +119,7 @@ const GardeningPage: React.FC = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          id_usuario: 6,
+          id_usuario: parseInt(userId),
           ...formData
         })
       });
@@ -131,13 +139,15 @@ const GardeningPage: React.FC = () => {
   // Publica uma nova dica na comunidade
   const handleAddTip = async () => {
     if (!newTip.trim()) return;
+    if (!userId) return alert("Faça login para postar.");
+
     setPostingTip(true);
 
     try {
       const response = await fetch(`${API_BASE_URL}/dicas`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id_usuario: 6, descricao: newTip })
+        body: JSON.stringify({ id_usuario: parseInt(userId), descricao: newTip })
       });
 
       if (response.ok) {
@@ -246,7 +256,7 @@ const GardeningPage: React.FC = () => {
                                   onClick={() => handleRegar(plant.id_planta)}
                                   className="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full hover:bg-green-200 border border-green-200 transition-all active:scale-95"
                                 >
-                                  Regar agora
+                                  Reguei hoje
                                 </button>
                               )}
                             <button 
@@ -335,7 +345,7 @@ const GardeningPage: React.FC = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Regar a cada (dias)</label>
-                <input type="number" min="1" required className="w-full p-2 border rounded" value={formData.frequencia_rega} onChange={e => setFormData({...formData, frequencia_rega: parseInt(e.target.value)})} />
+                <input type="number" min="1" required className="w-full p-2 border rounded" value={formData.frequencia_rega} onChange={e => setFormData({...formData, frequencia_rega: parseInt(e.target.value) || 0})} />
               </div>
               <button type="submit" disabled={saving} className="w-full py-2 bg-green-600 text-white rounded hover:bg-green-700">{saving ? 'Salvando...' : 'Salvar'}</button>
             </form>

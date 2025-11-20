@@ -42,6 +42,18 @@ const ProfilePage: React.FC = () => {
     estado: ''
   });
 
+  const userId = localStorage.getItem('user_id');
+
+  // Função Auxiliar de Máscara
+  const formatPhoneNumber = (value: string) => {
+    const cleaned = value.replace(/\D/g, '');
+    const match = cleaned.substring(0, 11);
+    if (match.length === 0) return '';
+    if (match.length <= 2) return `(${match}`;
+    if (match.length <= 7) return `(${match.substring(0, 2)}) ${match.substring(2)}`;
+    return `(${match.substring(0, 2)}) ${match.substring(2, 7)}-${match.substring(7, 11)}`;
+  };
+
   const getAchievementIcon = (iconName: string) => {
     switch (iconName) {
       case 'seed': return <UserIcon className="w-6 h-6 text-green-600" />;
@@ -55,8 +67,13 @@ const ProfilePage: React.FC = () => {
 
   // Função para buscar dados
   const fetchUserData = async () => {
+    if (!userId) {
+        setError("Usuário não logado.");
+        setLoading(false);
+        return;
+    }
     try {
-      const response = await fetch('http://localhost:3008/api/usuarios/6');
+      const response = await fetch(`http://localhost:3008/api/usuarios/${userId}`);
       if (!response.ok) throw new Error('Falha ao buscar dados');
       const data = await response.json();
       setUser(data);
@@ -77,7 +94,7 @@ const ProfilePage: React.FC = () => {
     if (user) {
       setFormData({
         nome: user.nome,
-        telefone: user.telefone || '',
+        telefone: user.telefone ? formatPhoneNumber(user.telefone) : '',
         bairro: user.bairro || '',
         cidade: user.cidade || '',
         estado: user.estado || ''
@@ -86,13 +103,24 @@ const ProfilePage: React.FC = () => {
     }
   };
 
+  // Função de Mudança com Máscara
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (name === 'telefone') {
+      setFormData({ ...formData, telefone: formatPhoneNumber(value) });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
+
   // Função para salvar alterações
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!userId) return;
     setSaving(true);
 
     try {
-      const response = await fetch(`http://localhost:3008/api/usuarios/6`, {
+      const response = await fetch(`http://localhost:3008/api/usuarios/${userId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -183,7 +211,7 @@ const ProfilePage: React.FC = () => {
                   </div>
                   <div>
                     <label className="text-xs text-gray-500">Telefone</label>
-                    <p className="text-gray-800 font-medium">{user.telefone || 'Não informado'}</p>
+                    <p className="text-gray-800 font-medium">{user.telefone ? formatPhoneNumber(user.telefone) : 'Não informado'}</p>
                   </div>
                   <div>
                     <label className="text-xs text-gray-500">Endereço</label>
@@ -300,19 +328,21 @@ const ProfilePage: React.FC = () => {
                 <input 
                   type="text" 
                   required
+                  name="nome" 
                   className="w-full p-2 border border-gray-300 rounded focus:ring-green-500 focus:border-green-500"
                   value={formData.nome}
-                  onChange={e => setFormData({...formData, nome: e.target.value})}
+                  onChange={handleChange}
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Telefone</label>
                 <input 
-                  type="text" 
+                  type="text"
+                  name="telefone"
                   className="w-full p-2 border border-gray-300 rounded focus:ring-green-500 focus:border-green-500"
                   value={formData.telefone}
-                  onChange={e => setFormData({...formData, telefone: e.target.value})}
+                  onChange={handleChange}
                   placeholder="(xx) xxxxx-xxxx"
                 />
               </div>
@@ -321,10 +351,11 @@ const ProfilePage: React.FC = () => {
                 <div className="col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">Bairro</label>
                   <input 
-                    type="text" 
+                    type="text"
+                    name="bairro"
                     className="w-full p-2 border border-gray-300 rounded focus:ring-green-500 focus:border-green-500"
                     value={formData.bairro}
-                    onChange={e => setFormData({...formData, bairro: e.target.value})}
+                    onChange={handleChange}
                   />
                 </div>
                 <div>

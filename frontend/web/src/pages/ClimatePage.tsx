@@ -226,7 +226,6 @@ const ClimatePage: React.FC = () => {
                                     <InfoItem icon="👀" label="Visibilidade" value={formatVisibility(weatherData.visibility)} />
                                     <InfoItem icon="🌅" label="Nascer do sol" value={formatTime(weatherData.sunrise)} />
                                     <InfoItem icon="🌇" label="Pôr do sol" value={formatTime(weatherData.sunset)} />
-                                    <InfoItem icon="☀️" label="Índice UV" value="8 - Alto" highlight />
                                 </div>
                             </div>
                         </>

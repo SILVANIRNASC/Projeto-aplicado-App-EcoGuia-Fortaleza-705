@@ -2,9 +2,11 @@ const pool = require('../config/db');
 const { verificarConquista } = require('../utils/gamification');
 
 exports.criarPlanta = async (req, res) => {
-    const { id_usuario, nome_popular, nome_cientifico, data_plantio } = req.body;
+    const { id_usuario, nome_popular, nome_cientifico, data_plantio, frequencia_rega } = req.body;
 
     try {
+        const freqRega = frequencia_rega || 3;
+        
         const query = `INSERT INTO plantas (id_usuario, nome_popular, nome_cientifico, data_plantio, frequencia_rega, ultima_rega) 
             VALUES ($1, $2, $3, $4, $5, $6) 
             RETURNING *
