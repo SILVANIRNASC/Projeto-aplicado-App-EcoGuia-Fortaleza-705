@@ -119,3 +119,15 @@ export const HappyFaceIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <line x1="15" x2="15.01" y1="9" y2="9" />
   </svg>
 );
+
+export const TrophyIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0V5.25a2.25 2.25 0 00-2.25-2.25h-1.5a2.25 2.25 0 00-2.25 2.25v9.75m6.75-3.75h1.5a2.25 2.25 0 012.25 2.25v2.25M6 11.25H4.5a2.25 2.25 0 00-2.25 2.25v2.25" />
+  </svg>
+);
+
+export const StarIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="none" {...props}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.563.044.796.746.362 1.107l-4.152 3.477a.562.562 0 00-.182.56l1.275 5.397a.562.562 0 01-.852.63l-4.625-2.995a.562.562 0 00-.56 0l-4.625 2.995a.562.562 0 01-.852-.63l1.275-5.397a.562.562 0 00-.182-.56L3.063 10.5c-.434-.361-.202-1.063.362-1.107l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+  </svg>
+);
