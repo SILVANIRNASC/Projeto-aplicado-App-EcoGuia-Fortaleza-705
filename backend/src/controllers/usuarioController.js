@@ -66,3 +66,30 @@ exports.buscarUsuarioPorId = async (req, res) => {
     res.status(500).json({ error: "Erro ao buscar usuário" });
   }
 };
+
+exports.atualizarUsuario = async (req, res) => {
+    const { id } = req.params;
+    const { nome, telefone, bairro, cidade, estado } = req.body;
+
+    try {
+        const query = `
+            UPDATE usuarios 
+            SET nome = $1, telefone = $2, bairro = $3, cidade = $4, estado = $5
+            WHERE id_usuario = $6
+            RETURNING *
+        `;
+        
+        const values = [nome, telefone, bairro, cidade, estado, id];
+        const resultado = await pool.query(query, values);
+
+        if (resultado.rowCount === 0) {
+            return res.status(404).json({ error: "Usuário não encontrado" });
+        }
+
+        res.json(resultado.rows[0]);
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Erro ao atualizar usuário" });
+    }
+};

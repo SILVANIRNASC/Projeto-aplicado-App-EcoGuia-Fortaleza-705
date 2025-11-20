@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { UserIcon, TrophyIcon, StarIcon } from '../components/icons';
+import { UserIcon, TrophyIcon, StarIcon, CloseIcon } from '../components/icons';
 
 // Interface para tipar os dados que vêm da API
 interface Conquista {
@@ -15,6 +15,9 @@ interface UserData {
   nome: string;
   email: string;
   telefone: string;
+  bairro: string;
+  cidade: string;
+  estado: string;
   endereco_completo: string;
   data_cadastro: string;
   pontos_total: number;
@@ -27,49 +30,91 @@ const ProfilePage: React.FC = () => {
   const [user, setUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [saving, setSaving] = useState(false);
 
-  // Função para escolher o ícone baseado na string que vem do banco
+  // Estado para o formulário de edição
+  const [formData, setFormData] = useState({
+    nome: '',
+    telefone: '',
+    bairro: '',
+    cidade: '',
+    estado: ''
+  });
+
   const getAchievementIcon = (iconName: string) => {
     switch (iconName) {
-      case 'seed':
-        return <UserIcon className="w-6 h-6 text-green-600" />;
-      case 'leaf':
-      case 'tree':
-        return <TrophyIcon className="w-6 h-6 text-green-700" />; // Usando Trophy como genérico para planta se não tiver LeafIcon
-      case 'star':
-        return <StarIcon className="w-6 h-6 text-yellow-500" />;
-      case 'calendar':
-        return <StarIcon className="w-6 h-6 text-purple-500" />;
-      default:
-        return <TrophyIcon className="w-6 h-6 text-blue-600" />;
+      case 'seed': return <UserIcon className="w-6 h-6 text-green-600" />;
+      case 'leaf': 
+      case 'tree': return <TrophyIcon className="w-6 h-6 text-green-700" />;
+      case 'star': return <StarIcon className="w-6 h-6 text-yellow-500" />;
+      case 'calendar': return <StarIcon className="w-6 h-6 text-purple-500" />;
+      default: return <TrophyIcon className="w-6 h-6 text-blue-600" />;
     }
   };
 
-  // Buscar dados assim que a página carrega
+  // Função para buscar dados
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch('http://localhost:3008/api/usuarios/6');
+      if (!response.ok) throw new Error('Falha ao buscar dados');
+      const data = await response.json();
+      setUser(data);
+    } catch (err) {
+      console.error(err);
+      setError('Não foi possível carregar o perfil.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        // ID 6 fixo. No futuro, virá do contexto de Auth.
-        const response = await fetch('http://localhost:3008/api/usuarios/6');
-        
-        if (!response.ok) {
-          throw new Error('Falha ao buscar dados do usuário');
-        }
-
-        const data = await response.json();
-        setUser(data);
-      } catch (err) {
-        console.error(err);
-        setError('Não foi possível carregar o perfil.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchUserData();
   }, []);
 
-  // Tratamento de Carregamento e Erro
+  // Função para abrir o modal preenchido
+  const handleOpenEdit = () => {
+    if (user) {
+      setFormData({
+        nome: user.nome,
+        telefone: user.telefone || '',
+        bairro: user.bairro || '',
+        cidade: user.cidade || '',
+        estado: user.estado || ''
+      });
+      setIsEditModalOpen(true);
+    }
+  };
+
+  // Função para salvar alterações
+  const handleSaveProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+
+    try {
+      const response = await fetch(`http://localhost:3008/api/usuarios/6`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        await fetchUserData(); // Recarrega os dados para atualizar a tela
+        setIsEditModalOpen(false);
+        alert('Perfil atualizado com sucesso!');
+      } else {
+        alert('Erro ao atualizar perfil.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Erro de conexão.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen text-brand-blue">
@@ -86,22 +131,20 @@ const ProfilePage: React.FC = () => {
     );
   }
 
-  // Cálculos de interface
   const stats = {
     plants: user.total_plantas || 0, 
-    tips: user.total_dicas || 0,  
+    tips: user.total_dicas || 0,   
     points: user.pontos_total || 0,
     daysActive: user.data_cadastro 
       ? Math.floor((new Date().getTime() - new Date(user.data_cadastro).getTime()) / (1000 * 3600 * 24)) 
       : 1
   };
 
-  // Cálculo do próximo nível
   const pointsToNextLevel = 100 - (stats.points % 100);
   const progressPercentage = stats.points % 100;
 
   return (
-    <main className="flex-1 bg-gray-50">
+    <main className="flex-1 bg-gray-50 relative">
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="mb-6">
             <h1 className="text-3xl font-bold text-gray-900 flex items-center">
@@ -116,10 +159,14 @@ const ProfilePage: React.FC = () => {
             <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-semibold text-gray-800">Informações Pessoais</h2>
-                <button className="text-sm font-medium text-green-600 hover:text-green-700">Editar</button>
+                <button 
+                  onClick={handleOpenEdit}
+                  className="text-sm font-medium text-green-600 hover:text-green-700 transition-colors"
+                >
+                  Editar
+                </button>
               </div>
               <div className="flex flex-col items-center md:flex-row md:items-start space-y-6 md:space-y-0 md:space-x-8">
-                {/* Gerando avatar automático com as iniciais do nome */}
                 <img 
                   src={`https://ui-avatars.com/api/?name=${user.nome}&background=0D9488&color=fff`} 
                   alt="User Avatar" 
@@ -153,7 +200,6 @@ const ProfilePage: React.FC = () => {
               </div>
             </div>
 
-            {/* Settings Card */}
             <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                 <h2 className="text-xl font-semibold text-gray-800 mb-4">Configurações</h2>
                 <p className="text-gray-600">Personalize sua experiência no app.</p>
@@ -161,17 +207,15 @@ const ProfilePage: React.FC = () => {
           </div>
 
           <div className="space-y-8">
-            {/* Green Journey Card - AGORA DINÂMICO */}
+            {/* Green Journey Card */}
             <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 text-center">
               <h2 className="text-xl font-semibold text-gray-800 mb-4">Minha Jornada Verde</h2>
               
-              {/* Pontuação Principal */}
               <div className="mb-6">
                 <p className="text-5xl font-bold text-blue-600">{stats.points}</p>
                 <p className="text-sm text-gray-500 font-medium uppercase tracking-wide">Pontos de Sustentabilidade</p>
               </div>
 
-              {/* Barra de Progresso do Nível */}
               <div className="w-full bg-gray-100 rounded-full h-3 mb-2 overflow-hidden">
                 <div 
                     className="bg-green-500 h-3 rounded-full transition-all duration-1000 ease-out" 
@@ -198,7 +242,7 @@ const ProfilePage: React.FC = () => {
               </div>
             </div>
 
-            {/* Achievements Card - AGORA DINÂMICO */}
+            {/* Achievements Card */}
             <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-xl font-semibold text-gray-800">Conquistas</h2>
@@ -238,6 +282,92 @@ const ProfilePage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* MODAL DE EDIÇÃO DE PERFIL */}
+      {isEditModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden animate-fade-in-up">
+            <div className="flex justify-between items-center p-4 border-b">
+              <h3 className="text-lg font-bold text-gray-900">Editar Perfil</h3>
+              <button onClick={() => setIsEditModalOpen(false)} className="text-gray-500 hover:text-gray-700">
+                <CloseIcon className="w-6 h-6" />
+              </button>
+            </div>
+            
+            <form onSubmit={handleSaveProfile} className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Nome Completo</label>
+                <input 
+                  type="text" 
+                  required
+                  className="w-full p-2 border border-gray-300 rounded focus:ring-green-500 focus:border-green-500"
+                  value={formData.nome}
+                  onChange={e => setFormData({...formData, nome: e.target.value})}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Telefone</label>
+                <input 
+                  type="text" 
+                  className="w-full p-2 border border-gray-300 rounded focus:ring-green-500 focus:border-green-500"
+                  value={formData.telefone}
+                  onChange={e => setFormData({...formData, telefone: e.target.value})}
+                  placeholder="(xx) xxxxx-xxxx"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Bairro</label>
+                  <input 
+                    type="text" 
+                    className="w-full p-2 border border-gray-300 rounded focus:ring-green-500 focus:border-green-500"
+                    value={formData.bairro}
+                    onChange={e => setFormData({...formData, bairro: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Cidade</label>
+                  <input 
+                    type="text" 
+                    className="w-full p-2 border border-gray-300 rounded focus:ring-green-500 focus:border-green-500"
+                    value={formData.cidade}
+                    onChange={e => setFormData({...formData, cidade: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">UF</label>
+                  <input 
+                    type="text" 
+                    maxLength={2}
+                    className="w-full p-2 border border-gray-300 rounded focus:ring-green-500 focus:border-green-500 uppercase"
+                    value={formData.estado}
+                    onChange={e => setFormData({...formData, estado: e.target.value.toUpperCase()})}
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-3 mt-6 pt-4 border-t">
+                <button 
+                  type="button"
+                  onClick={() => setIsEditModalOpen(false)}
+                  className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+                >
+                  Cancelar
+                </button>
+                <button 
+                  type="submit"
+                  disabled={saving}
+                  className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
+                >
+                  {saving ? 'Salvando...' : 'Salvar Alterações'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </main>
   );
 };

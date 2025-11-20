@@ -6,5 +6,5 @@ const usuarioController = require('../controllers/usuarioController');
 router.get('/', usuarioController.listarUsuarios);
 router.post('/cadastrar', usuarioController.criarUsuario);
 router.get('/:id', usuarioController.buscarUsuarioPorId);
-
+router.put('/:id', usuarioController.atualizarUsuario);
 module.exports = router;

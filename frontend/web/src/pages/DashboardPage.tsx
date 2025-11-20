@@ -1,16 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LeafIcon, RecycleIcon, SunIcon, UserIcon } from '../components/icons';
-import { mockUserProfile } from '../data';
 
 const DashboardCard = ({ icon, title, description, path }: { icon: React.ReactNode, title: string, description: string, path: string }) => {
   const navigate = useNavigate();
   return (
     <div
       onClick={() => navigate(path)}
-      className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-pointer flex flex-col items-center text-center"
+      className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-pointer flex flex-col items-center text-center group"
     >
-      <div className="bg-brand-blue-light text-brand-blue-dark p-4 rounded-full mb-4">
+      <div className="bg-blue-50 text-blue-600 p-4 rounded-full mb-4 group-hover:bg-blue-100 transition-colors">
         {icon}
       </div>
       <h3 className="text-lg font-semibold text-gray-800 mb-2">{title}</h3>
@@ -20,14 +19,55 @@ const DashboardCard = ({ icon, title, description, path }: { icon: React.ReactNo
 };
 
 const DashboardPage = () => {
+  // Estado para armazenar os números reais
+  const [stats, setStats] = useState({
+    plants: 0,
+    tips: 0,
+    points: 0,
+    daysActive: 0
+  });
+  const [loading, setLoading] = useState(true);
+
+  // Buscando os dados do Backend
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const response = await fetch('http://localhost:3008/api/usuarios/6');
+        
+        if (response.ok) {
+          const data = await response.json();
+          
+          // Calculando dias ativos
+          const days = data.data_cadastro 
+            ? Math.floor((new Date().getTime() - new Date(data.data_cadastro).getTime()) / (1000 * 3600 * 24)) 
+            : 1;
+
+          setStats({
+            plants: data.total_plantas || 0,
+            tips: data.total_dicas || 0,
+            points: data.pontos_total || 0,
+            daysActive: days
+          });
+        }
+      } catch (error) {
+        console.error("Erro ao carregar dashboard:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
   return (
-    <main className="flex-1">
+    <main className="flex-1 bg-gray-50">
       <div className="max-w-7xl mx-auto">
-        <div className="bg-white text-center py-8 px-4">
-            <div className="inline-block bg-brand-blue p-4 rounded-full mb-4 shadow-lg">
+        {/* Hero Section */}
+        <div className="bg-white text-center py-12 px-4 border-b border-gray-200">
+            <div className="inline-block bg-green-600 p-4 rounded-full mb-4 shadow-lg ring-4 ring-green-100">
                 <LeafIcon className="h-12 w-12 text-white" />
             </div>
-            <h1 className="text-4xl font-bold text-brand-green">
+            <h1 className="text-4xl font-bold text-green-700">
                 EcoGuia Fortaleza
             </h1>
             <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
@@ -35,8 +75,9 @@ const DashboardPage = () => {
             </p>
         </div>
         
-        <div className="p-4 md:p-8 md:pt-0">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="p-4 md:p-8">
+          {/* Grid de Navegação */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 -mt-12 relative z-10">
             <DashboardCard 
               icon={<LeafIcon className="h-8 w-8" />}
               title="Meu Jardim"
@@ -63,26 +104,42 @@ const DashboardPage = () => {
             />
           </div>
 
-          <div className="mt-12 bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">Sua Jornada Verde</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                  <div>
-                      <p className="text-3xl font-bold text-brand-green">{mockUserProfile.stats.plants}</p>
-                      <p className="text-gray-500">Plantas</p>
-                  </div>
-                  <div>
-                      <p className="text-3xl font-bold text-brand-green">{mockUserProfile.stats.tips}</p>
-                      <p className="text-gray-500">Dicas</p>
-                  </div>
-                  <div>
-                      <p className="text-3xl font-bold text-brand-blue">{mockUserProfile.stats.points}</p>
-                      <p className="text-gray-500">Pontos</p>
-                  </div>
-                  <div>
-                      <p className="text-3xl font-bold text-brand-blue">{mockUserProfile.stats.daysActive}</p>
-                      <p className="text-gray-500">Dias Ativo</p>
-                  </div>
-              </div>
+          {/* Área de Estatísticas Dinâmicas */}
+          <div className="mt-12 bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+              <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">Sua Jornada Verde</h2>
+              
+              {loading ? (
+                <div className="flex justify-center py-8">
+                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-gray-100">
+                    <div className="group">
+                        <p className="text-4xl font-bold text-green-600 mb-1 group-hover:scale-110 transition-transform">
+                          {stats.plants}
+                        </p>
+                        <p className="text-gray-500 font-medium">Plantas</p>
+                    </div>
+                    <div className="group">
+                        <p className="text-4xl font-bold text-green-600 mb-1 group-hover:scale-110 transition-transform">
+                          {stats.tips}
+                        </p>
+                        <p className="text-gray-500 font-medium">Dicas</p>
+                    </div>
+                    <div className="group">
+                        <p className="text-4xl font-bold text-blue-600 mb-1 group-hover:scale-110 transition-transform">
+                          {stats.points}
+                        </p>
+                        <p className="text-gray-500 font-medium">Pontos</p>
+                    </div>
+                    <div className="group">
+                        <p className="text-4xl font-bold text-blue-600 mb-1 group-hover:scale-110 transition-transform">
+                          {stats.daysActive}
+                        </p>
+                        <p className="text-gray-500 font-medium">Dias Ativo</p>
+                    </div>
+                </div>
+              )}
           </div>
         </div>
       </div>
