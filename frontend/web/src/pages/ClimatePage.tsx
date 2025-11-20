@@ -21,6 +21,8 @@ const RecommendationCard = ({ icon, title, text }: { icon: string, title: string
     </div>
 );
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3008/api';
+
 // --- Interface para os dados da API ---
 interface WeatherData {
     temp: number;
@@ -87,7 +89,7 @@ const ClimatePage: React.FC = () => {
     // 3. Função para chamar a API de IA (reutilizável)
     const fetchAiTip = async (question: string): Promise<string> => {
         try {
-            const response = await fetch('http://localhost:3008/api/ask', {
+            const response = await fetch(`${API_BASE_URL}/ask`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -114,7 +116,7 @@ const ClimatePage: React.FC = () => {
             try {
                 // Buscar Dados do Clima
                 setLoading(true);
-                const weatherResponse = await fetch('http://localhost:3008/api/weather');
+                const weatherResponse = await fetch(`${API_BASE_URL}/weather`);
                 if (!weatherResponse.ok) {
                     throw new Error('Falha ao buscar dados do clima');
                 }

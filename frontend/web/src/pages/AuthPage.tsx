@@ -4,6 +4,7 @@ import { LeafIcon, UserIcon, MailIcon, LockIcon, EyeIcon, EyeOffIcon, MapPinIcon
 interface AuthPageProps {
   onLogin: () => void;
 }
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3008/api';
 
 const AuthPage: React.FC<AuthPageProps> = ({ onLogin }) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -53,7 +54,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onLogin }) => {
   const handleLogin = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:3008/api/usuarios/login', {
+      const response = await fetch(`${API_BASE_URL}/usuarios/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -96,7 +97,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onLogin }) => {
         estado: formData.estado || 'CE'
       };
 
-      const response = await fetch('http://localhost:3008/api/usuarios/cadastrar', {
+      const response = await fetch(`${API_BASE_URL}/usuarios/cadastrar`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

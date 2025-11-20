@@ -53,7 +53,7 @@ const GardeningPage: React.FC = () => {
 
   const userId = localStorage.getItem('user_id');
 
-  const API_BASE_URL = 'http://localhost:3008/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3008/api';
 
   // Carrega as plantas do usuário (ID fixo para testes)
   const fetchPlants = async () => {

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { UserIcon, TrophyIcon, StarIcon, CloseIcon } from '../components/icons';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3008/api';
+
 // Interface para tipar os dados que vêm da API
 interface Conquista {
   titulo: string;
@@ -73,7 +75,7 @@ const ProfilePage: React.FC = () => {
         return;
     }
     try {
-      const response = await fetch(`http://localhost:3008/api/usuarios/${userId}`);
+      const response = await fetch(`${API_BASE_URL}/usuarios/${userId}`);
       if (!response.ok) throw new Error('Falha ao buscar dados');
       const data = await response.json();
       setUser(data);
@@ -120,7 +122,7 @@ const ProfilePage: React.FC = () => {
     setSaving(true);
 
     try {
-      const response = await fetch(`http://localhost:3008/api/usuarios/${userId}`, {
+      const response = await fetch(`${API_BASE_URL}/usuarios/${userId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
