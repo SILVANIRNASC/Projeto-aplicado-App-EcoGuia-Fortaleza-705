@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LeafIcon, RecycleIcon, SunIcon, UserIcon } from '../components/icons';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3008/api';
+const API_BASE_URL = import.meta.env.PROD 
+  ? 'https://ecoguia-api-0wh8.onrender.com/api' 
+  : 'http://localhost:3008/api';
 
 const DashboardCard = ({ icon, title, description, path }: { icon: React.ReactNode, title: string, description: string, path: string }) => {
   const navigate = useNavigate();

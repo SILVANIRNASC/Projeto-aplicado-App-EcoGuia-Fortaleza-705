@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { UserIcon, TrophyIcon, StarIcon, CloseIcon } from '../components/icons';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3008/api';
+const API_BASE_URL = import.meta.env.PROD 
+  ? 'https://ecoguia-api-0wh8.onrender.com/api' 
+  : 'http://localhost:3008/api';
 
 // Interface para tipar os dados que vêm da API
 interface Conquista {

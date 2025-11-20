@@ -21,8 +21,10 @@ const RecommendationCard = ({ icon, title, text }: { icon: string, title: string
     </div>
 );
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3008/api';
-
+const API_BASE_URL = import.meta.env.PROD 
+  ? 'https://ecoguia-api-0wh8.onrender.com/api' 
+  : 'http://localhost:3008/api';
+  
 // --- Interface para os dados da API ---
 interface WeatherData {
     temp: number;

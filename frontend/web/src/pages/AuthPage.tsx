@@ -4,8 +4,10 @@ import { LeafIcon, UserIcon, MailIcon, LockIcon, EyeIcon, EyeOffIcon, MapPinIcon
 interface AuthPageProps {
   onLogin: () => void;
 }
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3008/api';
-
+const API_BASE_URL = import.meta.env.PROD 
+  ? 'https://ecoguia-api-0wh8.onrender.com/api' 
+  : 'http://localhost:3008/api';
+  
 const AuthPage: React.FC<AuthPageProps> = ({ onLogin }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
