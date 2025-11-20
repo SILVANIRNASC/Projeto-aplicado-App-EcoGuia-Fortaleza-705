@@ -2,10 +2,14 @@
 require("./config/dotenv");
 
 const express = require("express");
+const pool = require('./config/db');
 const cors = require("cors");
+
 const healthController = require("./controllers/healthController");
 const askController = require("./controllers/askController");
 const weatherController = require("./controllers/weatherController");
+
+const usuarioRoutes = require("./routes/usuarioRoutes");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -20,6 +24,9 @@ app.use(cors());
 app.get("/api/health", healthController.checkHealth);
 app.post("/api/ask", askController.getSustainabilityAnswer);
 app.get("/api/weather", weatherController.getWeatherData);
+
+// Rotas do Banco de Dados
+app.use("/api/usuarios", usuarioRoutes);
 
 // Middleware para tratamento de rotas não encontradas (404)
 app.use((req, res, next) => {
