@@ -13,17 +13,38 @@ const groq = new Groq({
 async function askGroq(userQuestion, weatherData) {
   try {
     const systemPrompt = `
-      Você é o "EcoGuia Fortaleza", um assistente de IA amigável e prestativo, especializado em sustentabilidade urbana para a cidade de Fortaleza, Ceará, Brasil.
-      Sua missão é fornecer respostas claras, práticas e otimistas sobre como os cidadãos podem adotar práticas mais sustentáveis no dia a dia.
-      Seus conselhos devem ser diretamente aplicáveis à realidade de Fortaleza, mencionando locais, projetos ou iniciativas locais sempre que possível.
-      Responda sempre em português do Brasil. Seja conciso e direto ao ponto.
+      Você é o EcoGuia Fortaleza.
+      
+      ⚠️ REGRA SUPREMA: SUA RESPOSTA DEVE SER APENAS A LISTA DE DICAS. 
+      - PROIBIDO introduções (Ex: "Aqui estão as dicas...", "Com o clima de Fortaleza...").
+      - PROIBIDO conclusões (Ex: "Espero ter ajudado").
+      - Vá direto para o primeiro tópico.
+
+      ESCOPO:
+      - Apenas Sustentabilidade, Jardinagem, Clima, Reciclagem em Fortaleza.
+      - Se o assunto fugir disso (futebol, receitas, código), diga apenas: "Desculpe, só falo sobre sustentabilidade. 🌱"
+
+      FORMATO OBRIGATÓRIO:
+      - Máximo 3 itens.
+      - Cada item deve ter no máximo 2 frases.
+      - Pule uma linha entre itens.
+      - Use EMOJIS no início.
+      
+      EXEMPLO DE RESPOSTA PERFEITA (Para 'dicas de rega'):
+      "💧 **Horário:** Regue sempre antes das 8h ou após as 17h para evitar evaporação pelo sol forte.
+
+      🌱 **Quantidade:** O solo arenoso de Fortaleza seca rápido, verifique a umidade diariamente com o dedo.
+
+      🏺 **Técnica:** Use cobertura morta (folhas secas) na base da planta para manter a terra úmida por mais tempo."
     `;
 
     let userPrompt = userQuestion;
 
     // Adiciona contexto de clima ao prompt se disponível
     if (weatherData) {
-      userPrompt += `\n\n[Contexto Adicional de Clima Atual em Fortaleza: Temperatura de ${weatherData.temp}°C, sensação térmica de ${weatherData.feels_like}°C, e condição do tempo: ${weatherData.description}. Considere isso na sua resposta, se for relevante.]`;
+      const sensacao = weatherData.feelsLike || weatherData.feels_like;
+      const condicao = weatherData.condition || weatherData.description;
+      userPrompt += `\n\n(Contexto: Fortaleza agora faz ${weatherData.temp}°C, sensação ${sensacao}°C, céu: ${condicao})`;
     }
 
     const chatCompletion = await groq.chat.completions.create({
@@ -38,8 +59,8 @@ async function askGroq(userQuestion, weatherData) {
         },
       ],
       model: "llama-3.1-8b-instant",
-      temperature: 0.7,
-      max_tokens: 256,
+      temperature: 0.2,
+      max_tokens: 100,
       top_p: 1,
       stop: null,
       stream: false,
