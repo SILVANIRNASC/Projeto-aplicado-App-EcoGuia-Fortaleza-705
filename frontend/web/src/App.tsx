@@ -12,8 +12,10 @@ import ProfilePage from './pages/ProfilePage';
 import Chatbot from './components/Chatbot';
 
 const App: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    return !!localStorage.getItem('user_id');
+  });
+  
   const handleLogin = () => {
     setIsAuthenticated(true);
   };
