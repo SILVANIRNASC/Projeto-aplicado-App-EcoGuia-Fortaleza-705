@@ -12,6 +12,7 @@ const weatherController = require("./controllers/weatherController");
 const usuarioRoutes = require("./routes/usuarioRoutes");
 const plantaRoutes = require("./routes/plantaRoutes");
 const dicaRoutes = require("./routes/dicaRoutes");
+const pontoRoutes = require("./routes/pontoRoutes");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -31,6 +32,7 @@ app.get("/api/weather", weatherController.getWeatherData);
 app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/plantas", plantaRoutes);
 app.use("/api/dicas", dicaRoutes);
+app.use("/api/pontos", pontoRoutes);
 
 // Middleware para tratamento de rotas não encontradas (404)
 app.use((req, res, next) => {
