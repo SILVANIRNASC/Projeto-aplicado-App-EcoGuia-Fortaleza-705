@@ -1,4 +1,4 @@
-# Projeto-EcoGuia-Fortaleza-705
+# Projeto-EcoGuia-Fortaleza
 Repositório do Projeto Aplicado N705 - Documentação técnica e protótipos.
 
 **Tema:** App EcoGuia Fortaleza 🌱
