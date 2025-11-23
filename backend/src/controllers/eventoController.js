@@ -50,8 +50,11 @@ exports.criarEvento = async (req, res) => {
                 'INSERT INTO participacao_evento (id_evento, id_usuario) VALUES ($1, $2)', 
                 [evento.id_evento, id_usuario]
             );
+            
+            await verificarConquista(id_usuario, 'EVENTO_PRESENCA');
         }
         
+
         res.status(201).json(evento);
     } catch (error) {
         console.error(error);

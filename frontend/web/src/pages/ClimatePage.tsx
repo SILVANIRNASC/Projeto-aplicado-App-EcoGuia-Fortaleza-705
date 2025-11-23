@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { SunIcon } from '../components/icons';
 
 const InfoItem = ({ icon, label, value, highlight = false }: { icon: string, label: string, value: string, highlight?: boolean }) => (
@@ -12,12 +14,14 @@ const InfoItem = ({ icon, label, value, highlight = false }: { icon: string, lab
     </div>
 );
 
-const RecommendationCard = ({ icon, title, text }: { icon: string, title: string, text: string }) => (
+const RecommendationCard = ({ icon, title, content }: { icon: string, title: string, content: React.ReactNode }) => (
     <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
         <h4 className="font-semibold text-gray-800 flex items-center mb-1">
             <span role="img" aria-label="icon" className="mr-2 text-xl">{icon}</span> {title}
         </h4>
-        <p className="text-sm text-gray-600">{text}</p>
+        <div className="text-sm text-gray-600 leading-relaxed">
+            {content}
+        </div>
     </div>
 );
 
@@ -171,18 +175,37 @@ const ClimatePage: React.FC = () => {
 
     // 5. Helper para renderizar os cards de dica
     const renderAiTipCard = (icon: string, title: string, tipState: AiTipState) => {
-        let textToShow = 'Carregando dica...';
+        let content: React.ReactNode = 'Carregando dica...';
+
         if (tipState.loading) {
-            textToShow = 'Consultando IA...';
+            content = (
+                <div className="flex items-center space-x-2 text-gray-500 italic">
+                    <div className="animate-spin h-4 w-4 border-2 border-blue-500 rounded-full border-t-transparent"></div>
+                    <span>Consultando EcoGuia...</span>
+                </div>
+            );
         } else if (tipState.error) {
-            textToShow = `Erro: ${tipState.error}`;
+            content = <span className="text-red-500">Erro: {tipState.error}</span>;
         } else if (tipState.text) {
-            textToShow = tipState.text;
-        } else if (!loading && !weatherData) { // Se o clima falhou
-            textToShow = 'Dica indisponível no momento.';
+            // AQUI ESTÁ A MUDANÇA: ReactMarkdown renderiza o texto
+            content = (
+                <ReactMarkdown 
+                    children={tipState.text} 
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                        // Estilização básica para o markdown dentro do card
+                        p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
+                        strong: ({node, ...props}) => <span className="font-bold text-gray-800" {...props} />,
+                        ul: ({node, ...props}) => <ul className="list-disc ml-4 space-y-1" {...props} />,
+                        li: ({node, ...props}) => <li {...props} />
+                    }}
+                />
+            );
+        } else if (!loading && !weatherData) {
+            content = 'Dica indisponível no momento.';
         }
 
-        return <RecommendationCard icon={icon} title={title} text={textToShow} />;
+        return <RecommendationCard icon={icon} title={title} content={content} />;
     };
 
 
@@ -244,7 +267,7 @@ const ClimatePage: React.FC = () => {
                             <RecommendationCard
                                 icon="💡"
                                 title="Dica do Dia"
-                                text={weatherData.sustainability_tip}
+                                content={weatherData.sustainability_tip}
                             />
                         )}
 

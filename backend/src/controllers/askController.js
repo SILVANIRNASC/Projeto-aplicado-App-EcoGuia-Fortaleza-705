@@ -1,5 +1,6 @@
 const groqService = require('../services/groqService');
 const weatherService = require('../services/weatherService');
+const pool = require('../config/db');
 
 /**
  * @description Obtém uma resposta de sustentabilidade usando a IA da Groq.
@@ -18,16 +19,32 @@ async function getSustainabilityAnswer(req, res, next) {
       });
     }
 
-    // 2. (Opcional) Busca dados do clima para contextualizar a resposta
+    // Busca dados do clima para contextualizar a resposta
     let weatherData = null;
     try {
         weatherData = await weatherService.getFortalezaWeather();
     } catch (weatherError) {
         console.warn('Não foi possível obter os dados de clima. A pergunta será processada sem esse contexto.', weatherError.message);
     }
+
+    // Busca os próximos 3 eventos futuros para dar contexto à IA
+    let eventsData = [];
+    try {
+        const eventQuery = `
+            SELECT titulo, descricao, local, TO_CHAR(data_evento, 'DD/MM/YYYY HH24:MI') as data_formatada 
+            FROM eventos 
+            WHERE data_evento >= NOW() 
+            ORDER BY data_evento ASC 
+            LIMIT 3
+        `;
+        const eventResult = await pool.query(eventQuery);
+        eventsData = eventResult.rows;
+    } catch (eventError) {
+        console.warn('Sem dados de eventos:', eventError.message);
+    }
     
     // 3. Chama o serviço da Groq para obter a resposta da IA
-    const answer = await groqService.askGroq(question, weatherData);
+    const answer = await groqService.askGroq(question, weatherData, eventsData);
 
     // 4. Retorna a resposta com sucesso
     res.status(200).json({ resposta: answer });

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { Link } from 'react-router-dom';
 import { CalendarIcon, ChatBubbleIcon, CloseIcon, HappyFaceIcon, LeafIcon, RecycleIcon } from './icons';
 
 // Configuração da URL da API (Produção vs Localhost)
@@ -118,7 +119,33 @@ const Chatbot: React.FC = () => {
                                             ol: ({node, ...props}) => <ol className="list-decimal ml-4 mb-2 space-y-1" {...props} />,
                                             li: ({node, ...props}) => <li className="" {...props} />,
                                             strong: ({node, ...props}) => <strong className="font-bold" {...props} />,
-                                            a: ({node, ...props}) => <a className="text-blue-500 hover:underline break-all" target="_blank" rel="noopener noreferrer" {...props} />,
+                                            a: ({node, href, children, ...props}: any) => {
+                                                const isInternal = href && href.startsWith('/');
+                                                if (isInternal) {
+                                                    // Se for link interno (/eventos), usa o Link do React Router para não recarregar a página
+                                                    return (
+                                                        <Link 
+                                                            to={href} 
+                                                            className="text-blue-600 hover:underline font-medium cursor-pointer"
+                                                            onClick={() => setIsOpen(false)} // Opcional: fecha o chat ao navegar
+                                                        >
+                                                            {children}
+                                                        </Link>
+                                                    );
+                                                }
+                                                // Se for link externo, abre em nova aba
+                                                return (
+                                                    <a 
+                                                        href={href}
+                                                        className="text-blue-500 hover:underline break-all" 
+                                                        target="_blank" 
+                                                        rel="noopener noreferrer" 
+                                                        {...props}
+                                                    >
+                                                        {children}
+                                                    </a>
+                                                );
+                                            },                                            
                                             code: ({node, className, children, ...props}: any) => {
                                                 const match = /language-(\w+)/.exec(className || '')
                                                 return match ? (
