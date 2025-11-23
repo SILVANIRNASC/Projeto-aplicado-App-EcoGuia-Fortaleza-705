@@ -7,6 +7,7 @@ import DashboardPage from './pages/DashboardPage';
 import GardeningPage from './pages/GardeningPage';
 import DisposalPage from './pages/DisposalPage';
 import ClimatePage from './pages/ClimatePage';
+import EventosPage from './pages/EventosPage';
 import ProfilePage from './pages/ProfilePage';
 import Chatbot from './components/Chatbot';
 
@@ -32,6 +33,7 @@ const App: React.FC = () => {
               <Route path="/jardinagem" element={<GardeningPage />} />
               <Route path="/descarte" element={<DisposalPage />} />
               <Route path="/clima" element={<ClimatePage />} />
+              <Route path="/eventos" element={<EventosPage />} />
               <Route path="/perfil" element={<ProfilePage />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>

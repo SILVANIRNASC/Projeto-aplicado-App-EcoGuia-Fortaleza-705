@@ -13,6 +13,7 @@ const usuarioRoutes = require("./routes/usuarioRoutes");
 const plantaRoutes = require("./routes/plantaRoutes");
 const dicaRoutes = require("./routes/dicaRoutes");
 const pontoRoutes = require("./routes/pontoRoutes");
+const eventoRoutes = require("./routes/eventoRoutes");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -33,6 +34,7 @@ app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/plantas", plantaRoutes);
 app.use("/api/dicas", dicaRoutes);
 app.use("/api/pontos", pontoRoutes);
+app.use("/api/eventos", eventoRoutes);
 
 // Middleware para tratamento de rotas não encontradas (404)
 app.use((req, res, next) => {

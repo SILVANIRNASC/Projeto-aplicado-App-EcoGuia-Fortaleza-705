@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { HomeIcon, LeafIcon, RecycleIcon, SunIcon, UserIcon, CloudIcon } from './icons';
+import { HomeIcon, LeafIcon, RecycleIcon, SunIcon, UserIcon, CloudIcon, CalendarIcon } from './icons';
 
 interface NavItemProps {
   to: string;
@@ -76,6 +76,7 @@ const Header: React.FC<HeaderProps> = ({ onLogout }) => {
               <DesktopNavItem to="/" icon={<HomeIcon className="h-5 w-5" />} label="Início" />
               <DesktopNavItem to="/jardinagem" icon={<LeafIcon className="h-5 w-5" />} label="Jardinagem" />
               <DesktopNavItem to="/descarte" icon={<RecycleIcon className="h-5 w-5" />} label="Descarte" />
+              <DesktopNavItem to="/eventos" icon={<CalendarIcon className="h-5 w-5" />} label="Eventos" />
               <DesktopNavItem to="/clima" icon={<CloudIcon className="h-5 w-5" />} label="Clima" />
             </div>
           </div>
@@ -123,6 +124,7 @@ const Header: React.FC<HeaderProps> = ({ onLogout }) => {
         <MobileNavItem to="/" icon={<HomeIcon className="h-5 w-5" />} label="Início" />
         <MobileNavItem to="/jardinagem" icon={<LeafIcon className="h-5 w-5" />} label="Jardinagem" />
         <MobileNavItem to="/descarte" icon={<RecycleIcon className="h-5 w-5" />} label="Descarte" />
+        <MobileNavItem to="/eventos" icon={<CalendarIcon className="h-5 w-5" />} label="Eventos" />
         <MobileNavItem to="/clima" icon={<CloudIcon className="h-5 w-5" />} label="Clima" />
         <MobileNavItem to="/perfil" icon={<UserIcon className="h-5 w-5" />} label="Perfil" />
       </nav>
