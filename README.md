@@ -99,7 +99,7 @@ Este cronograma foi planejado para a Etapa 2 do projeto, com duração total de 
 | Nome | Matrícula | Função |
 | :--- | :--- | :--- |
 | Anyele Ventura Lima | 2323813 | Desenvolvimento Backend e APIs |
-| Isadora Ianne Aguiar de Castro | 2323864 | Modelagem de Dados e Arquitetura |
+| Isadora Ianne Aguiar de Castro | 2323864 | Validação do sistema |
 | Luiz Henrique | 202400004 | Desenvolvimento Frontend e UX/UI |
 | Silvanir Nascimento dos Santos | 2326784 | Análise de Requisitos e Documentação |
 
