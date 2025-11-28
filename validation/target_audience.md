@@ -1,7 +1,7 @@
 # Público-Alvo - EcoGuia Fortaleza
 
 ## 1. Identificação do Público-Alvo
-A validação foi realizada com três usuários estratégicos que representam os principais casos de uso do aplicativo em Fortaleza:
+A validação foi realizada com três usuários estratégicos que representam casos de uso do aplicativo em Fortaleza:
 
 **Perfil A: Jardinagem Urbana**
 * **Nome:** [Ex: Dona Maria das Graças]
