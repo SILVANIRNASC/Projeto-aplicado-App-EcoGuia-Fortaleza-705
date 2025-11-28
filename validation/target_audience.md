@@ -1,20 +1,19 @@
-# Definição do Público-Alvo Específico
+# Público-Alvo - EcoGuia Fortaleza
 
-## Perfil Selecionado: Segmento de Jardinagem
+## 1. Identificação do Público-Alvo
+A validação foi realizada com três usuários estratégicos que representam os principais casos de uso do aplicativo em Fortaleza:
 
-O projeto focou na validação com um usuário real e identificável, conforme exigido na proposta da atividade.
+**Perfil A: Jardinagem Urbana**
+* **Nome:** [Ex: Dona Maria das Graças]
+* **Localização:** [Ex: Bairro Montese]
+* **Contexto:** Mantém um jardim doméstico e precisava de orientações sobre plantas nativas e adubo.
 
-### 1. Identificação do Usuário
-* **Nome:** Luanna Cavalcante Monte
-* **Localização Exata:** Rua Nicolau Coelho, 101 - Fortaleza, CE.
-* **Ocupação:** Estudante Universitária e Dona de Casa.
+**Perfil B: Descarte de Resíduos Especiais (Couro Sintético)**
+* **Nome:** [Ex: Sr. Carlos Alberto (Tapeceiro)]
+* **Localização:** [Ex: Bairro Centro]
+* **Contexto:** Trabalha com estofados e gera resíduos de couro sintético, tendo dificuldade de encontrar o ponto correto de descarte.
 
-### 2. Contexto e Necessidades Específicas
-Luanna representa o perfil "multitarefa" dentro da comunidade. Devido à dupla jornada (estudos e gestão do lar), ela enfrenta dificuldades específicas que o sistema visa resolver:
-
-* **Restrição de Tempo:** Como estudante, seus horários livres são escassos e irregulares, dificultando o agendamento com jardineiros que operam apenas em horário comercial padrão.
-* **Necessidade de Ferramentas:** Não possui equipamentos profissionais de jardinagem em casa, necessitando de prestadores que levem o próprio material.
-* **Segurança e Confiança:** Por morar em residência (casa de rua), preza pela segurança na contratação de serviços, buscando referências comunitárias confiáveis.
-
-### 3. Vinculação com o ODS 11 (Cidades e Comunidades Sustentáveis)
-A validação com a Srta. Luanna confirma a necessidade de serviços locais que melhore a manutenção de áreas verdes residenciais, contribuindo para o aspecto ambiental do bairro e fomentando a economia local (contratação de vizinhos), pilares do ODS 11.
+**Perfil C: Descarte de Óleo de Cozinha**
+* **Nome:** [Ex: Sra. Ana Paula (Salgadeira)]
+* **Localização:** [Ex: Bairro Barra do Ceará]
+* **Contexto:** Produz grande quantidade de óleo usado e buscava uma forma sustentável de descarte.
