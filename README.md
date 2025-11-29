@@ -133,7 +133,7 @@ O sistema está hospedado e acessível publicamente:
 ---
 
 ## 7. 📢 Validação com Público-Alvo
-A validação foi realizada com **3 perfis reais** (Jardinagem, Indústria Têxtil e Alimentícia) na cidade de Fortaleza.
+A validação foi realizada com **3 perfis** (Jardinagem, Indústria Têxtil e Alimentícia) na cidade de Fortaleza.
 
 ### Resultados Chave:
 *   Alcançou **Nota máxima de satisfação (NPS)**.
