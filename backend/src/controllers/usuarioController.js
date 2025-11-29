@@ -1,5 +1,6 @@
 const pool = require("../config/db");
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const { verificarConquista } = require('../utils/gamification');
 
 // Listar todos os usuários
@@ -104,7 +105,6 @@ exports.login = async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        // Busca o usuário pelo e-mail
         const query = 'SELECT * FROM usuarios WHERE email = $1';
         const result = await pool.query(query, [email]);
 
@@ -113,18 +113,25 @@ exports.login = async (req, res) => {
         }
 
         const usuario = result.rows[0];
-
-        // Compara a senha enviada com o Hash do banco
         const senhaValida = await bcrypt.compare(password, usuario.senha_hash);
 
         if (!senhaValida) {
             return res.status(401).json({ error: "E-mail ou senha incorretos." });
         }
 
+        // Remove a senha do retorno
         delete usuario.senha_hash;
+
+        // GERAR TOKEN JWT
+        const token = jwt.sign(
+            { id: usuario.id_usuario, nome: usuario.nome }, 
+            process.env.JWT_SECRET, 
+            { expiresIn: '1d' } // Expira em 1 dia
+        );
         
         res.json({
             message: "Login realizado com sucesso!",
+            token: token,
             usuario: usuario
         });
 
