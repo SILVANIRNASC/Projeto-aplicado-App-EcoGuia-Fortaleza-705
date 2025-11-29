@@ -1,4 +1,4 @@
-Documentação da API - EcoGuia Fortaleza
+**Documentação da API - EcoGuia Fortaleza**
 
 Esta documentação descreve os endpoints da API RESTful do EcoGuia. A API foi desenvolvida em Node.js com Express e utiliza banco de dados PostgreSQL.
 
