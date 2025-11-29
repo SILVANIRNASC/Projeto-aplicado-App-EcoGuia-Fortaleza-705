@@ -43,7 +43,7 @@ O objetivo foi verificar se as funcionalidades principais atendem às necessidad
 
 Os feedbacks coletados via formulário geraram o seguinte plano de ação:
 
-| Participante | Feedback / Dificuldade Relatada (*ipsis litteris*) | Ação da Equipe (Correção/Melhoria) | Status |
+| Participante | Feedback / Dificuldade Relatada | Ação da Equipe (Correção/Melhoria) | Status |
 | :--- | :--- | :--- | :--- |
 | Sra. Luanna | Sugestão: "Talvez grupos ou comunidades em que as pessoas pudessem entrar para trocar ideias específicas" | Backlog: Criação de Fórum/Comunidade planejada para a versão 2.0. | ⚠️ Futuro |
 | Sra. Syntia | Dificuldade: "**ACHAR O CHAT**" | Ajuste de UI: Aumentamos o destaque do ícone flutuante do Chatbot para torná-lo mais visível em todas as telas [s]. | ✅ Feito |
