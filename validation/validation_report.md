@@ -35,7 +35,7 @@ O objetivo foi verificar se as funcionalidades principais atendem às necessidad
 *   Cenário: A usuária testou o sistema focada na necessidade de descarte de óleo.
 *   Avaliação: Deu nota máxima para a utilidade das respostas do assistente virtual.
 *   Feedback Principal: Afirmou que "**ele respondeu minha dúvida rapidamente**".
-*   Dificuldade Encontrada: Relatou dificuldade inicial para "**ACHAR O CHAT**", indicando uma oportunidade de melhoria na interface.
+*   Dificuldade Encontrada: Relatou dificuldade inicial para "achar o chatbot", indicando uma oportunidade de melhoria na interface.
 
 ---
 
