@@ -133,12 +133,45 @@ O sistema está hospedado e acessível publicamente:
 ---
 
 ## 7. 📢 Validação com Público-Alvo
-A validação foi realizada com **3 perfis** (Jardinagem, Indústria Têxtil e Alimentícia) na cidade de Fortaleza.
 
-### Resultados Chave:
-*   Alcançou **Nota máxima de satisfação (NPS)**.
-*   O Chatbot foi validado como **ferramenta eficaz de educação**.
-*   Ajustes de usabilidade (como o tamanho da fonte e a visibilidade do chat) foram aplicados com base nos testes.
+## 📅 Contexto e Processo de Validação
+
+A validação foi realizada entre **25 e 26 de novembro de 2025**. O processo utilizou **testes de usabilidade moderados** e **formulários quantitativos (Google Forms)**.
+
+Os participantes executaram tarefas, como localizar ecopontos e usar o chatbot, e avaliaram a experiência.
+
+## 👥 Público-Alvo e Perfis Estratégicos
+
+A validação concentrou-se em **três perfis estratégicos** que representam os pilares de uso do EcoGuia em Fortaleza:
+
+1.  **Jardinagem Doméstica:** Sra. Luanna (Messejana), focada em monitoramento de plantas e clima.
+2.  **Indústria Têxtil (Resíduos):** Sr. José (Carlito Pamplona), proprietário de fábrica que necessita descartar retalhos de couro.
+3.  **Setor Alimentício (Óleo):** Sra. Syntia (Álvaro Weyne), proprietária de empresa de salgados que precisa descartar óleo saturado.
+
+## 🎯 Principais Feedbacks Recebidos
+
+### Satisfação
+
+*   O **índice de satisfação foi máximo**.
+*   Houve elogios à **clareza das informações** e à **utilidade da Inteligência Artificial (IA)**.
+
+### Dificuldade de Usabilidade
+
+*   Uma utilizadora relatou **dificuldade inicial em encontrar o botão do Chatbot** ("ACHAR O CHAT").
+
+### Sugestão para Funcionalidade
+
+*   Foi sugerida a criação de **grupos/comunidades** dentro do app para **troca de ideias entre moradores**.
+
+## ✅ Ajustes e Próximos Passos (Backlog)
+
+Foram implementados ajustes imediatos e planejamento futuro.
+
+| Categoria | Descrição do Ajuste | Status | Fonte |
+| :--- | :--- | :--- | :--- |
+| **Usabilidade** | O **botão flutuante do EcoAssistente (Chatbot)** recebeu **maior destaque visual e contraste** para resolver a dificuldade de localização relatada. | ✅ Feito | |
+| **Performance** | **Testes de carga** garantiram a estabilidade da busca de Ecopontos. | ✅ Feito | |
+| **Futuro/Sugestão** | A funcionalidade de "**Fórum Comunitário**" (grupos/comunidades sugeridos) foi planeada para a **versão 2.0**. | ⚠️ Backlog | |
 
 ### 📸 Evidências Fotográficas
 Para comprovar a realização dos testes, disponibilizamos as fotos e autorizações na pasta de evidências.
