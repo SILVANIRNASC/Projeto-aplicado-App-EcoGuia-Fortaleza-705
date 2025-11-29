@@ -2,7 +2,7 @@
 
 ### 1. Metodologia de Validação
 
-A validação do EcoGuia foi realizada entre os dias 25 e 26 de novembro de 2025, utilizando a metodologia de **Testes de Usabilidade Moderados** e entrevistas presenciais com preenchimento de formulário de feedback.
+A validação do EcoGuia foi realizada entre os dias 25 e 26 de novembro de 2025, utilizando a metodologia de **Testes de Usabilidade** e entrevistas presenciais com preenchimento de formulário de feedback.
 
 O objetivo foi verificar se as funcionalidades principais (Mapa de Ecopontos, Guia de Plantas e Chatbot) atendem às necessidades reais de três perfis distintos de cidadãos de Fortaleza, conforme mapeado no arquivo `target_audience.md`.
 
