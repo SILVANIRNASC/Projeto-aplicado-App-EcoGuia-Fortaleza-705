@@ -1,5 +1,3 @@
- # EcoGuia Fortaleza: Inovação para a Sustentabilidade Urbana
-
 ## 🌱 App EcoGuia Fortaleza
 Projeto Aplicado Multiplataforma - Etapa 2 (N708)
 
