@@ -1,9 +1,4 @@
-Com base nas informações fornecidas nos trechos de "EcoGuia Fortaleza: Inovação para a Sustentabilidade Urbana", abaixo está a estrutura completa do arquivo em formato Markdown (`.md`), pronta para ser copiada e colada em um repositório do GitHub.
-
----
-
-```markdown
-# EcoGuia Fortaleza: Inovação para a Sustentabilidade Urbana
+ # EcoGuia Fortaleza: Inovação para a Sustentabilidade Urbana
 
 ## 🌱 App EcoGuia Fortaleza
 Projeto Aplicado Multiplataforma - Etapa 2 (N708)
