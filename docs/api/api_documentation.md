@@ -1,121 +1,289 @@
-# Especificação da API – App EcoGuia Fortaleza 🌿
+Documentação da API - EcoGuia Fortaleza
 
-Este documento detalha a especificação técnica da API **App EcoGuia Fortaleza**, incluindo seus endpoints, formatos de requisição e resposta, e os mecanismos de autenticação. Ele serve como um guia para desenvolvedores que precisam integrar sistemas com esta API.
+Esta documentação descreve os endpoints da API RESTful do EcoGuia. A API foi desenvolvida em Node.js com Express e utiliza banco de dados PostgreSQL.
 
-## 1\. Endpoints Previstos
+Base URL Local: http://localhost:3000/api
 
-### 1.1. `POST /api/ask`
+1. Monitoramento e Utilitários
 
-  * **Descrição**: Envia uma pergunta ao assistente virtual de sustentabilidade e recebe uma resposta. A API processa a pergunta usando a Groq Cloud API e retorna uma resposta contextualizada para a região de Fortaleza.
-  * **Autenticação**: Requer um token de autenticação (JWT).
+Health Check
 
-### 1.2. `GET /api/health`
+Verifica a saúde da API e se o servidor está online.
 
-  * **Descrição**: Endpoint de verificação de saúde da API. É usado para monitorar se a aplicação está online e funcional. Não requer autenticação.
+URL: /health
 
------
+Método: GET
 
-## 2\. Autenticação e Autorização
+Resposta de Sucesso (200 OK):
 
-A API utiliza o padrão de autenticação por **token**. Para acessar a maioria dos endpoints, o cliente deve incluir um token de autorização no cabeçalho da requisição.
-
-  * **Método**: Bearer Token
-  * **Formato**: O token de autenticação (JWT) deve ser enviado no cabeçalho `Authorization`.
-
-**Exemplo de Cabeçalho de Requisição:**
-
-```
-Authorization: Bearer <seu_token_aqui>
-Content-Type: application/json
-```
-
-**Observação**: O endpoint `/api/health` não exige autenticação.
-
------
-
-## 3\. Detalhamento de Endpoints
-
-### 3.1. `POST /api/ask`
-
-#### Parâmetros de Requisição
-
-Este endpoint espera um corpo de requisição no formato JSON.
-
-| Parâmetro | Tipo | Obrigatório | Descrição |
-| :--- | :--- | :--- | :--- |
-| `question` | `string` | Sim | A pergunta do usuário sobre sustentabilidade. |
-
-**Exemplo de Requisição (Body):**
-
-```json
 {
-  "question": "Como descartar óleo de cozinha usado em Fortaleza?"
+  "status": "ok",
+  "message": "API EcoGuia Fortaleza está funcionando!",
+  "timestamp": "2025-11-29T20:00:00.000Z"
 }
-```
 
-#### Formatos de Resposta
 
-##### Resposta de Sucesso (Status Code: `200 OK`)
+Dados Climáticos (OpenWeatherMap)
 
-A resposta retorna a resposta gerada pelo assistente virtual e o status da operação.
+Retorna dados do clima atual de Fortaleza e gera uma dica de sustentabilidade baseada na temperatura/chuva.
 
-**Exemplo de Resposta (Body):**
+URL: /weather
 
-```json
+Método: GET
+
+Resposta de Sucesso (200 OK):
+
 {
-  "resposta": "Em Fortaleza, você pode descartar óleo de cozinha usado em pontos de coleta específicos, como...",
-  "status": "success"
+  "temp": 29,
+  "description": "céu limpo",
+  "sustainability_tip": "Dia quente! Aproveite para secar roupas no varal e economizar energia.",
+  "message": "Dados climáticos de Fortaleza"
 }
-```
 
-##### Resposta de Erro (Status Code: `400 Bad Request`)
 
-Ocorre quando o formato da requisição é inválido, como a falta do parâmetro `question`.
+2. Inteligência Artificial (Groq Cloud)
 
-**Exemplo de Resposta (Body):**
+Assistente Virtual (Chatbot)
 
-```json
+Recebe uma pergunta do usuário e retorna uma resposta gerada por IA, contextualizada com o clima e eventos locais.
+
+URL: /ask
+
+Método: POST
+
+Corpo da Requisição (JSON):
+
 {
-  "error": "O campo 'question' é obrigatório.",
-  "status": "error"
+  "question": "Como posso descartar óleo de cozinha usado?"
 }
-```
 
-##### Resposta de Erro (Status Code: `500 Internal Server Error`)
 
-Ocorre quando há um erro interno no servidor ao processar a requisição.
+Resposta de Sucesso (200 OK):
 
-**Exemplo de Resposta (Body):**
-
-```json
 {
-  "error": "Ocorreu um erro interno ao processar a sua requisição.",
-  "status": "error"
+  "resposta": "Para descartar o óleo, espere esfriar, coloque em uma garrafa PET e leve a um Ecoponto..."
 }
-```
 
------
 
-### 3.2. `GET /api/health`
+3. Usuários (/usuarios)
 
-#### Parâmetros de Requisição
+Cadastro de Usuário
 
-Este endpoint não requer nenhum parâmetro.
+Registra um novo usuário e atribui automaticamente a conquista "Bem-vindo".
 
-#### Formatos de Resposta
+URL: /usuarios/cadastrar
 
-##### Resposta de Sucesso (Status Code: `200 OK`)
+Método: POST
 
-Indica que a API está em pleno funcionamento.
+Corpo da Requisição:
 
-**Exemplo de Resposta (Body):**
-
-```json
 {
-  "status": "OK",
-  "timestamp": "2024-09-25T10:00:00.000Z",
-  "version": "1.0.0"
+  "nome": "João Silva",
+  "email": "joao@email.com",
+  "senha_hash": "senha123",  // Nota: O backend espera este nome de campo
+  "telefone": "85999999999",
+  "bairro": "Benfica",
+  "cidade": "Fortaleza",
+  "estado": "CE"
 }
-```
 
------
+
+Login
+
+Autentica o usuário comparando o hash da senha.
+
+URL: /usuarios/login
+
+Método: POST
+
+Corpo da Requisição:
+
+{
+  "email": "joao@email.com",
+  "password": "senha123"
+}
+
+
+Buscar Usuário por ID
+
+Retorna os dados do perfil, estatísticas (total de plantas/dicas) e lista de conquistas desbloqueadas.
+
+URL: /usuarios/:id
+
+Método: GET
+
+Atualizar Usuário
+
+Atualiza dados cadastrais.
+
+URL: /usuarios/:id
+
+Método: PUT
+
+Corpo da Requisição:
+
+{
+  "nome": "João S.",
+  "telefone": "85888888888",
+  "bairro": "Centro",
+  "cidade": "Fortaleza",
+  "estado": "CE"
+}
+
+
+4. Pontos de Coleta (/pontos)
+
+Listar Ecopontos
+
+Retorna todos os pontos de coleta, incluindo a lista de tipos de resíduos aceitos (com cores para o mapa).
+
+URL: /pontos
+
+Método: GET
+
+Resposta Exemplo:
+
+[
+  {
+    "id_ponto": 1,
+    "nome_local": "Ecoponto Varjota",
+    "endereco": "Rua Meruoca, s/n",
+    "latitude": -3.735,
+    "longitude": -38.485,
+    "lista_residuos": [{"nome": "Vidro", "cor": "#28a745"}, {"nome": "Óleo", "cor": "#ffc107"}]
+  }
+]
+
+
+5. Guia de Plantas (/plantas)
+
+Cadastrar Planta
+
+Adiciona uma planta ao jardim do usuário. Verifica conquistas "Primeira Planta" e "Jardineiro Top".
+
+URL: /plantas
+
+Método: POST
+
+Corpo da Requisição:
+
+{
+  "id_usuario": 1,
+  "nome_popular": "Jiboia",
+  "nome_cientifico": "Epipremnum aureum",
+  "data_plantio": "2025-11-01",
+  "frequencia_rega": 3
+}
+
+
+Listar Plantas do Usuário
+
+Retorna as plantas e calcula o status da próxima rega (ex: "Hoje", "Amanhã", "Atrasada").
+
+URL: /plantas/usuario/:id_usuario
+
+Método: GET
+
+Resposta:
+
+[
+  {
+    "nome_popular": "Jiboia",
+    "status_rega": "Em 2 dias",
+    "proxima_rega_data": "2025-11-30T..."
+  }
+]
+
+
+Registrar Cuidado
+
+Atualiza a data da última ação na planta.
+
+URL: /plantas/:id_planta/cuidado
+
+Método: PUT
+
+Corpo da Requisição:
+
+{
+  "tipo_cuidado": "rega" 
+}
+
+
+Opções para tipo_cuidado: "rega", "adubacao", "poda".
+
+6. Dicas Sustentáveis (/dicas)
+
+Listar Feed de Dicas
+
+Lista dicas da comunidade com nome do autor.
+
+URL: /dicas
+
+Método: GET
+
+Publicar Dica
+
+Usuário envia uma dica e pode ganhar a conquista "Eco Mentor".
+
+URL: /dicas
+
+Método: POST
+
+Corpo da Requisição:
+
+{
+  "id_usuario": 1,
+  "descricao": "Reutilize potes de sorvete para organizar pregos e parafusos."
+}
+
+
+7. Eventos (/eventos)
+
+Listar Eventos
+
+Lista eventos futuros. Se informar id_usuario na query, retorna se ele já confirmou presença.
+
+URL: /eventos?id_usuario=1
+
+Método: GET
+
+Criar Evento
+
+URL: /eventos
+
+Método: POST
+
+Corpo da Requisição:
+
+{
+  "titulo": "Limpeza da Praia",
+  "descricao": "Mutirão voluntário",
+  "data_evento": "2025-12-15 08:00:00",
+  "local": "Praia de Iracema",
+  "id_usuario": 1
+}
+
+
+Confirmar/Cancelar Presença
+
+Alterna a participação do usuário no evento (Check-in/Check-out). Gera conquista "Evento Presença".
+
+URL: /eventos/:id_evento/participar
+
+Método: POST
+
+Corpo da Requisição:
+
+{
+  "id_usuario": 1
+}
+
+
+Ver Participantes
+
+Lista os nomes de quem vai ao evento.
+
+URL: /eventos/:id_evento/participantes
+
+Método: GET
