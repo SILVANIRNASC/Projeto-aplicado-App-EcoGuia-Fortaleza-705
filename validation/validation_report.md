@@ -1,53 +1,63 @@
-# Relatório de Validação com Público-Alvo - EcoGuia Fortaleza
+## Relatório de Validação com Público-Alvo - EcoGuia Fortaleza
 
-## 1. Identificação do Público-Alvo
-A validação foi realizada com três usuários estratégicos que representam os principais casos de uso do aplicativo em Fortaleza:
+### 1. Metodologia de Validação
 
-**Perfil A: Jardinagem Urbana**
-* **Nome:** [Ex: Dona Maria das Graças]
-* **Localização:** [Ex: Bairro Montese]
-* **Contexto:** Mantém um jardim doméstico e precisava de orientações sobre plantas nativas e adubo.
+A validação do EcoGuia foi realizada entre os dias 25 e 26 de novembro de 2025 [i], utilizando a metodologia de **Testes de Usabilidade Moderados** e entrevistas presenciais com preenchimento de formulário de feedback [i].
 
-**Perfil B: Descarte de Resíduos Especiais (Couro Sintético)**
-* **Nome:** [Ex: Sr. Carlos Alberto (Tapeceiro)]
-* **Localização:** [Ex: Bairro Centro]
-* **Contexto:** Trabalha com estofados e gera resíduos de couro sintético, tendo dificuldade de encontrar o ponto correto de descarte.
+O objetivo foi verificar se as funcionalidades principais (Mapa de Ecopontos, Guia de Plantas e Chatbot) atendem às necessidades reais de três perfis distintos de cidadãos de Fortaleza, conforme mapeado no arquivo `target_audience.md` [i].
 
-**Perfil C: Descarte de Óleo de Cozinha**
-* **Nome:** [Ex: Sra. Ana Paula (Salgadeira)]
-* **Localização:** [Ex: Bairro Barra do Ceará]
-* **Contexto:** Produz grande quantidade de óleo usado e buscava uma forma sustentável de descarte.
+#### Dinâmica aplicada:
+1. Contextualização: Apresentação breve do propósito do EcoGuia (ODS 11) [j].
+2. Tarefa Guiada: Solicitou-se ao usuário que realizasse uma ação específica no app [j].
+3. Formulário Google Forms: Coleta quantitativa e qualitativa das impressões [j].
 
-## 2. Metodologia de Validação
-* **Formato:** Entrevistas individuais e teste de usabilidade guiado.
-* **Data(s):** [Ex: 24 e 25 de novembro de 2025]
-* **Dinâmica:** Cada participante utilizou o aplicativo focado na sua necessidade específica (buscar ecoponto ou guia de plantio).
+---
 
-## 3. Evidências da Validação
-As fotos dos testes individuais encontram-se na pasta `validation/evidence/`.
-* **Foto 1:** Teste com [Nome da pessoa da Jardinagem] navegando no guia de plantas.
-* **Foto 2:** [Nome da pessoa do Couro] localizando o Ecoponto mais próximo no mapa.
-* **Foto 3:** [Nome da pessoa do Óleo] verificando informações sobre reciclagem de óleo.
+### 2. Resultados dos Testes por Perfil
 
-## 4. Feedbacks Específicos
+#### Perfil A: Jardinagem Urbana
+*   Participante: Sra. Luanna Cavalcante Araujo Monte [k].
+*   Funcionalidades Testadas: Eventos, Busca por Jardinagem, Clima [k].
+*   Cenário: A usuária explorou as funcionalidades de jardinagem e eventos [k].
+*   Avaliação: Deu nota máxima (5/5) para o Chatbot e classificou a usabilidade como "Excelente" [l].
+*   Feedback Principal: Considerou a plataforma **objetiva e clara**, não encontrando dificuldades de navegação [l].
 
-### Do Perfil A (Jardinagem)
-* **Feedback:** [Ex: "Gostou muito das dicas de como cuidar das plantas, mas achou as fotos das flores pequenas."]
-* **Sugestão:** [Ex: Aumentar as imagens na galeria de plantas.]
+#### Perfil B: Gestão de Resíduos Especiais (Couro)
+*   Participante: Sr. José Eridício de Castro [m].
+*   Funcionalidades Testadas: Busca por Pontos Sustentáveis, Descartes [m].
+*   Cenário: O usuário precisava validar se conseguia encontrar locais para descarte dos resíduos da fábrica [m].
+*   Avaliação: Atribuiu nota máxima em todos os quesitos (Clareza, Precisão e Atualização) [n].
+*   Feedback Principal: Relatou que "**para mim tudo funciona**", validando o fluxo de busca de ecopontos sem encontrar barreiras [n].
 
-### Do Perfil B (Descarte de Couro)
-* **Feedback:** [Ex: "Ficou surpreso ao descobrir que existia um ponto de coleta perto da oficina dele, pois antes jogava no lixo comum."]
-* **Dificuldade:** [Ex: Teve dificuldade em filtrar o mapa apenas para 'Resíduos Volumosos'.]
+#### Perfil C: Descarte de Óleo de Cozinha
+*   Participante: Sra. Syntia Duarte de Paula [o].
+*   Funcionalidades Testadas: Busca por Pontos Sustentáveis, Descartes e Chatbot [o].
+*   Cenário: A usuária testou o sistema focada na necessidade de descarte de óleo [o].
+*   Avaliação: Deu nota máxima para a utilidade das respostas do assistente virtual [p].
+*   Feedback Principal: Afirmou que "**ele respondeu minha dúvida rapidamente**" [p].
+*   Dificuldade Encontrada: Relatou dificuldade inicial para "**ACHAR O CHAT**" [q], indicando uma oportunidade de melhoria na interface [q].
 
-### Do Perfil C (Descarte de Óleo)
-* **Feedback:** [Ex: "Achou prático, mas queria saber se o app avisa quando o caminhão da coleta passa."]
+---
 
-## 5. Ajustes e Melhorias Implementadas (Pós-Validação)
-Com base nesses testes, realizamos:
+### 3. Matriz de Feedback e Ajustes
 
-1.  **Melhoria no Mapa:** Ajustamos os filtros para facilitar a busca por tipos específicos de resíduos (como o couro).
-2.  **Interface:** Melhoramos a visualização das categorias de descarte para ficarem mais intuitivas.
-3.  **Conteúdo:** Revisamos as informações sobre descarte de óleo para incluir endereços atualizados.
+Os feedbacks coletados via formulário geraram o seguinte plano de ação [q]:
 
-## 6. Conclusão
-A validação multifacetada confirmou que o EcoGuia atende demandas reais de diferentes setores da sociedade em Fortaleza, desde o hobby (jardinagem) até o descarte profissional (resíduos de trabalho), cumprindo o objetivo do ODS 11 de tornar a cidade mais sustentável através da gestão correta de resíduos.
+| Participante | Feedback / Dificuldade Relatada (*ipsis litteris*) | Ação da Equipe (Correção/Melhoria) | Status |
+| :--- | :--- | :--- | :--- |
+| Sra. Luanna | Sugestão: "Talvez grupos ou comunidades em que as pessoas pudessem entrar para trocar ideias específicas" [r] | Backlog: Criação de Fórum/Comunidade planejada para a versão 2.0 [r]. | ⚠️ Futuro [r] |
+| Sra. Syntia | Dificuldade: "**ACHAR O CHAT**" [s] | Ajuste de UI: Aumentamos o destaque do ícone flutuante do Chatbot para torná-lo mais visível em todas as telas [s]. | ✅ Feito [s] |
+| Sr. José | "Não tenho [sugestões], pra mim tudo funciona" [t] | Manutenção: Monitoramento contínuo para garantir a estabilidade atual [t]. | ✅ Feito [t] |
+
+---
+
+### 4. Conclusão da Validação
+
+A validação de campo foi **extremamente positiva** [u]. O Net Promoter Score (NPS) implícito foi máximo, já que **todos os participantes marcaram nota 10** na probabilidade de recomendação [u].
+
+O sistema provou ser **robusto para diferentes perfis** [v], abrangendo desde a jardinagem doméstica até o descarte comercial [v].
+
+O feedback real sobre a visibilidade do botão de chat foi **crucial para um ajuste imediato de usabilidade**, demonstrando o valor deste processo de validação com usuários reais [v].
+
+***
+
