@@ -1,214 +1,164 @@
-#  App EcoGuia Fortaleza
-
-## 1. Título e Descrição do Projeto
-
-### Nome do Sistema
-**App EcoGuia Fortaleza**
-
-### Breve Descrição do Propósito
-O **App EcoGuia Fortaleza** é uma plataforma multiplataforma (Web e Mobile) projetada para apoiar práticas de sustentabilidade urbana na cidade de Fortaleza. O projeto contribui diretamente para a **ODS 11 – Cidades e Comunidades Sustentáveis**, promovendo soluções para o desenvolvimento urbano inclusivo, seguro, resiliente e sustentável.
-
-A iniciativa engaja a população na gestão consciente de resíduos, incentiva a jardinagem urbana e conecta a comunidade através de eventos e compartilhamento de conhecimentos. O sistema democratiza o saber ambiental, oferecendo ferramentas gamificadas e assistência via Inteligência Artificial.
-
-### Problema Solucionado
-O projeto visa resolver a **gestão ineficiente de resíduos sólidos urbanos** e a desconexão da população com o meio ambiente, abordando dores como:
-* **Desconhecimento sobre descarte:** Falta de informação centralizada sobre Ecopontos e o que descartar neles.
-* **Falta de engajamento:** A desconexão entre a geração de lixo e sua destinação final.
-* **Dúvidas Técnicas:** Dificuldade em obter respostas rápidas sobre sustentabilidade e jardinagem.
-* **Isolamento Comunitário:** Falta de divulgação de eventos locais focados em sustentabilidade.
+Com base nas informações fornecidas nos trechos de "EcoGuia Fortaleza: Inovação para a Sustentabilidade Urbana", abaixo está a estrutura completa do arquivo em formato Markdown (`.md`), pronta para ser copiada e colada em um repositório do GitHub.
 
 ---
 
-## 2. Funcionalidades Implementadas
+```markdown
+# EcoGuia Fortaleza: Inovação para a Sustentabilidade Urbana
 
-### Lista de Funcionalidades Principais
+## 🌱 App EcoGuia Fortaleza
+Projeto Aplicado Multiplataforma - Etapa 2 (N708)
 
-#### 1. EcoAssistente (Chatbot Inteligente)
-* **Assistência via IA:** Chatbot integrado (via Groq Cloud API) para responder dúvidas sobre sustentabilidade em linguagem natural.
-* **Ações Rápidas:** Botões de atalho para "Dicas de jardinagem", "Pontos de coleta" e "Eventos próximos".
-* **Interface Amigável:** Widget flutuante acessível de qualquer tela do sistema.
+O EcoGuia Fortaleza é uma solução tecnológica alinhada à **ODS 11 – Cidades e Comunidades Sustentáveis**.
 
-#### 2. Dashboard e Gamificação ("Sua Jornada Verde")
-* Visão geral do progresso do usuário com sistema de pontos e níveis.
-* **Conquistas:** Sistema de badges (medalhas) desbloqueáveis, como "Jardineiro Iniciante" e "Semente Plantada".
-
-#### 3. Meu Jardim Sustentável
-* **Gerenciamento de Plantas:** Cadastro de espécies com monitoramento de datas.
-* **Monitoramento de Rega:** Alertas visuais indicando se a rega está "Em dia" ou "Atrasada".
-* **Dicas da Comunidade:** Espaço colaborativo para usuários publicarem dicas.
-
-#### 4. Descarte Sustentável (Busca de Ecopontos)
-* **Busca Inteligente:** Filtros por Bairro e Tipo de Resíduo.
-* **Detalhes do Ponto:** Endereço, horário e itens aceitos (pilhas, óleo, eletrônicos).
-
-#### 5. Clima Inteligente & Agenda
-* **Integração OpenWeather:** Recomendações de plantio baseadas no clima atual de Fortaleza.
-* **Eventos:** Listagem de mutirões e workshops com confirmação de presença.
-
-### Status de Implementação
-* [x] Autenticação e Perfil de Usuário
-* [x] Sistema de Gamificação (Pontos/Conquistas)
-* [x] Módulo de Jardinagem e Monitoramento
-* [x] EcoAssistente (Chatbot IA)
-* [x] Localizador de Ecopontos
-* [x] Integração Climática
-
-### Screenshots das Telas Principais
-
-| Dashboard Gamificado | EcoAssistente (Chatbot) | Jardim e Monitoramento |
-|:---:|:---:|:---:|
-| ![Dashboard](insira_link_imagem_dashboard) | ![Chatbot](insira_link_imagem_chatbot) | ![Jardim](insira_link_imagem_jardim) |
-
-| Busca de Descarte | Clima Inteligente | Agenda de Eventos |
-|:---:|:---:|:---:|
-| ![Descarte](insira_link_imagem_descarte) | ![Clima](insira_link_imagem_clima) | ![Eventos](insira_link_imagem_eventos) |
+### 🎯 Propósito
+O App EcoGuia Fortaleza é uma plataforma multiplataforma (**Web e Mobile**) projetada para apoiar práticas de sustentabilidade urbana. O sistema democratiza o saber ambiental, oferecendo ferramentas gamificadas, localização de ecopontos e assistência via Inteligência Artificial para engajar a população na gestão consciente de resíduos e jardinagem urbana.
 
 ---
 
-## 3. Tecnologias utilizadas
-* **Linguagens de programação**
-  * JavaScript
-  * SQL
+## ⚠️ Problema Solucionado
+O projeto visa resolver a **gestão ineficiente de resíduos sólidos e a desconexão ambiental**, abordando os seguintes desafios:
 
+*   **Desconhecimento:** Falta de informação centralizada sobre Ecopontos.
+*   **Falta de engajamento:** Desconexão entre geração e destinação de lixo.
+*   **Dúvidas Técnicas:** Dificuldade em obter respostas rápidas sobre sustentabilidade.
+*   **Isolamento:** Falta de divulgação de eventos locais.
 
-* **Frameworks e bibliotecas**
-  * React.js (Web)
-  * React Native (Mobile)
-  * Express.js (Backend)
-  * Bibliotecas de API: Groq Cloud e OpenWeatherMap
+---
 
+## 2. Funcionalidades Principais
 
-* **Banco de dados**
-  * PostgreSQL
+1.  **🤖 EcoAssistente (Chatbot Inteligente)**
+    *   Assistência via IA (Groq Cloud) para responder dúvidas em linguagem natural.
+    *   Possui ações rápidas e um widget flutuante acessível de qualquer tela.
 
+2.  **🏆 Gamificação ("Sua Jornada Verde")**
+    *   Sistema de pontos e níveis para incentivar o uso.
+    *   Oferece conquistas desbloqueáveis (ex: "Jardineiro Iniciante").
 
-* **Ferramentas de desenvolvimento**
-  * Node.js
-  * Figma
-  * Git & GitHub
-  * Vercel
-## 4. Arquitetura do sistema
+3.  **🌻 Meu Jardim Sustentável**
+    *   Cadastro e gerenciamento de plantas.
+    *   Monitoramento de Rega: Alertas visuais baseados no clima (OpenWeather).
 
-* **Visão geral da arquitetura implementada**
-  O sistema adota uma arquitetura **Cliente-Servidor** baseada em **API RESTful**. O front-end (Web e Mobile) atua como cliente, consumindo dados JSON processados pelo back-end, que centraliza as regras de negócio, segurança e gerencia a comunicação com o banco de dados e serviços externos.
+4.  **♻️ Descarte Sustentável**
+    *   Mapa e lista de Ecopontos com filtros por bairro e tipo de resíduo.
+    *   Apresenta detalhes completos (endereço, horário, itens aceitos).
 
+5.  **📅 Clima & Agenda**
+    *   Oferece recomendações de plantio baseadas no clima atual.
+    *   Listagem de mutirões e workshops com confirmação de presença.
 
-* **Componentes principais**
-  * **Frontend (Client Side):**
-    * **Web (React.js):** Interface responsiva para acesso via navegador, focada em gestão e visualização de mapas.
-    * **Mobile (React Native):** Aplicação nativa para uso em campo, permitindo acesso rápido a funcionalidades como check-in em eventos e scanner de plantas.
-  * **Backend (Server Side):**
-    * **API Node.js + Express:** Servidor responsável por receber requisições HTTP, gerenciar autenticação (JWT) e orquestrar a lógica da aplicação.
-  * **Banco de Dados:**
-    * **PostgreSQL:** Sistema gerenciador de banco de dados relacional utilizado para armazenar informações de usuários, catálogo de plantas, localização de ecopontos e registros de gamificação.
+### 📸 Screenshots
+O sistema possui interfaces visuais para:
+*   Dashboard Gamificado
+*   EcoAssistente (Chatbot)
+*   Jardim e Monitoramento
+*   Busca de Descarte
+*   Clima Inteligente
+*   Agenda de Eventos
 
+*(Nota: Substitua os itens acima pelos prints reais do seu sistema)*
 
-* **Integrações realizadas**
-  * **Groq Cloud API:** Integração de Inteligência Artificial (LLM) para o funcionamento do chatbot "EcoAssistente".
-  * **OpenWeatherMap API:** Consumo de dados climáticos em tempo real para fornecer recomendações personalizadas de rega e plantio.
-  * **Serviços de Geolocalização:** Uso de APIs de mapas para renderização e localização dos pontos de coleta seletiva.
+---
 
-## 5. Instruções de instalação e execução
+## 3. Tecnologias Utilizadas
 
-* **Pré-requisitos**
-  * **Node.js** (versão 16 ou superior) instalado.
-  * **PostgreSQL** instalado e em execução.
-  * **Git** para clonagem do repositório.
-  * Gerenciador de pacotes **NPM** ou **Yarn**.
-  * (Opcional para Mobile) **Expo Go** no celular ou emulador Android/iOS configurado.
+| Componente | Tecnologias |
+| :--- | :--- |
+| **Frontend** | React.js (Web), React Native (Mobile) |
+| **Backend** | Node.js, Express.js |
+| **Banco de Dados** | PostgreSQL |
+| **APIs Externas** | Groq Cloud (IA), OpenWeatherMap (Clima) |
+| **Ferramentas de Desenvolvimento** | Git, GitHub, Vercel, Figma |
 
+---
 
-* **Passo a passo para instalação**
-  1.  **Clonar o repositório:**
-     ```bash
-     git clone [https://github.com/seu-usuario/eco-guia-fortaleza.git](https://github.com/seu-usuario/eco-guia-fortaleza.git)
-     cd eco-guia-fortaleza
-     ```
+## 4. Arquitetura do Sistema
+O sistema adota uma arquitetura **Cliente-Servidor baseada em API RESTful**.
 
-  2.  **Instalar dependências do Backend:**
-     ```bash
-     cd backend
-     npm install
-     ```
+*   **Frontend:** Consome dados JSON do backend.
+*   **Backend:** Centraliza regras de negócio, autenticação (JWT) e conexões.
+*   **Banco de Dados:** PostgreSQL relacional para garantir a integridade dos dados.
 
-  3. **Instalar dependências do Frontend (Web):**
-     ```bash
-     cd ../frontend-web
-     npm install
-     ```
+---
 
+## 5. Instalação e Execução
 
-* **Comandos para execução**
-  * **Rodar o Backend (Servidor):**
+### Pré-requisitos
+*   Node.js (v16+)
+*   PostgreSQL instalado
+
+### Passo a Passo
+
+1.  **Clonar o repositório:**
     ```bash
-    # Dentro da pasta /backend
+    git clone https://github.com/seu-usuario/eco-guia-fortaleza.git
+    ```
+
+2.  **Acessar o diretório principal:**
+    ```bash
+    cd eco-guia-fortaleza
+    ```
+
+3.  **Configurar Backend:**
+    ```bash
+    cd backend
+    npm install
+    # Crie um arquivo .env na raiz do backend com as variáveis abaixo
     npm run dev
     ```
-  * **Rodar o Frontend Web:**
+
+4.  **Configurar Frontend:**
     ```bash
-    # Dentro da pasta /frontend-web
+    cd ../frontend/web
+    npm install
     npm start
     ```
-  * **Rodar a versão Mobile:**
-    ```bash
-    # Dentro da pasta /mobile
-    npx expo start
-    ```
 
+### Variáveis de Ambiente (`.env` do Backend)
+Estas variáveis devem ser definidas na raiz da pasta `backend` para a execução do sistema.
 
-* **Configurações necessárias**
-  Antes de executar, é necessário criar um arquivo **`.env`** na raiz da pasta do backend com as seguintes variáveis de ambiente:
-  ```env
-  PORT=3000
-  DATABASE_URL=postgres://usuario:senha@localhost:5432/ecoguia_db
-  GROQ_API_KEY=sua_chave_aqui
-  OPENWEATHER_API_KEY=sua_chave_aqui
-  JWT_SECRET=sua_chave_secreta
+```env
+PORT=3000
+DATABASE_URL=postgres://usuario:senha@localhost:5432/ecoguia_db
+GROQ_API_KEY=sua_chave_aqui
+OPENWEATHER_API_KEY=sua_chave_aqui
+JWT_SECRET=sua_chave_secreta
+```
 
-## 6. Acesso ao sistema
+---
 
-* **URL de acesso (se hospedado)**
-  O sistema está hospedado e acessível publicamente através do link:
-  * [https://ecoguia-front.vercel.app/](https://ecoguia-front.vercel.app/)
+## 6. Acesso ao Sistema (Deploy)
+O sistema está hospedado e acessível publicamente:
 
+### 🔗 Acesse aqui:
+[https://ecoguia-front.vercel.app/](https://ecoguia-front.vercel.app/)
 
-* **Credenciais de teste**
-  Para validação das funcionalidades de usuário logado (gamificação e perfil), utilize as credenciais abaixo ou crie uma nova conta:
-  * **Login (E-mail):** `teste@teste.com`
-  * **Senha:** `123456` *(ou a senha padrão definida no banco de dados)*
+### Credenciais de Teste:
+*   **Login:** teste@teste.com
+*   **Senha:** 123456
 
-## 7. Validação com Público-Alvo
+---
 
-* **Definição específica do público-alvo**
-  O público-alvo é composto por **moradores da cidade de Fortaleza**, abrangendo desde jovens adultos engajados em causas ambientais e tecnologia, até entusiastas de jardinagem doméstica que buscam orientações sobre cultivo e descarte correto. O foco é democratizar o acesso à informação para cidadãos que desejam adotar hábitos sustentáveis, mas carecem de ferramentas centralizadas.
+## 7. 📢 Validação com Público-Alvo
+A validação foi realizada com **3 perfis reais** (Jardinagem, Indústria Têxtil e Alimentícia) na cidade de Fortaleza.
 
+### Resultados Chave:
+*   Alcançou **Nota máxima de satisfação (NPS)**.
+*   O Chatbot foi validado como **ferramenta eficaz de educação**.
+*   Ajustes de usabilidade (como o tamanho da fonte e a visibilidade do chat) foram aplicados com base nos testes.
 
-* **Resumo do processo de validação**
-  A validação foi realizada através de testes de usabilidade com um grupo amostral de usuários. Os participantes foram convidados a realizar tarefas específicas no sistema, como "Encontrar o ponto de coleta de pilhas mais próximo" e "Cadastrar uma planta no jardim virtual", enquanto a equipe observava a facilidade de navegação e o tempo de resposta.
+[📂 CLIQUE AQUI PARA VER O RELATÓRIO COMPLETO, FOTOS E EVIDÊNCIAS](link-para-a-pasta-validation)
 
+*(Acesse a pasta `validation/` para ver o relatório detalhado, fotos dos testes e feedbacks brutos).*
 
-* **Principais feedbacks recebidos**
-  * **Interação com o Mapa:** Alguns usuários relataram que, inicialmente, era difícil distinguir quais Ecopontos aceitavam quais tipos de materiais apenas pelos ícones.
-  * **Gamificação:** O sistema de pontos foi muito elogiado, sendo citado como um fator motivador para continuar usando o app.
-  * **Assistente IA:** Os usuários acharam a resposta do "EcoAssistente" muito útil, mas sugeriram que ele estivesse mais visível em todas as telas.
+---
 
+## 8. Equipe de Desenvolvimento
 
-* **Ajustes implementados**
-  * **Melhoria nos Filtros:** Adição de etiquetas de texto e filtros mais claros na tela de "Descarte Sustentável" para facilitar a busca por tipo de resíduo.
-  * **Acesso ao Chatbot:** O widget do EcoAssistente foi tornado flutuante e acessível a partir de qualquer página da aplicação para tirar dúvidas rápidas.
-  * **Interface de Eventos:** Simplificação do processo de confirmação de presença na agenda sustentável.
-
-## 8. Equipe de desenvolvimento
-
-* **Membros da equipe**
-| Nome | Matrícula | Função |
+| Nome | Matrícula | Função Principal |
 | :--- | :--- | :--- |
-| **Anyele Ventura Lima** | 2323813 | Desenvolvimento Backend e APIs |
-| **Isadora Ianne Aguiar de Castro** | 2323864 | Validação do sistema |
-| **Luiz Henrique** | 202400004 | Desenvolvimento Frontend e UX/UI |
-| **Silvanir Nascimento dos Santos** | 2326784 | Análise de Requisitos e Documentação |
-* **Papéis e contribuições principais**
-  * **Anyele Ventura Lima:** Focada no **Desenvolvimento Backend e APIs**, sendo responsável pela lógica do servidor e integração de dados.
-  * **Isadora Ianne Aguiar de Castro:** Responsável pela **Validação do sistema**, garantindo a qualidade e o funcionamento correto das funcionalidades.
-  * **Luiz Henrique:** Encarregado do **Desenvolvimento Frontend e UX/UI**, criando as interfaces visuais e a experiência do usuário.
-  * **Silvanir Nascimento dos Santos:** Atuou na **Análise de Requisitos e Documentação**, estruturando o escopo e os registros técnicos do projeto.
+| Anyele Ventura Lima | 2323813 | Desenvolvimento Backend e APIs |
+| Isadora Ianne Aguiar | 2323864 | Validação e QA |
+| Luiz Henrique | 202400004 | Desenvolvimento Frontend e UX/UI |
+| Silvanir Nascimento | 2326784 | Análise de Requisitos e Documentação |
+```
