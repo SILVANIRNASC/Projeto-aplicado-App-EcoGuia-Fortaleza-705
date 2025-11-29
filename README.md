@@ -140,7 +140,10 @@ A validação foi realizada com **3 perfis** (Jardinagem, Indústria Têxtil e A
 *   O Chatbot foi validado como **ferramenta eficaz de educação**.
 *   Ajustes de usabilidade (como o tamanho da fonte e a visibilidade do chat) foram aplicados com base nos testes.
 
-[📂 CLIQUE AQUI PARA VER O RELATÓRIO COMPLETO, FOTOS E EVIDÊNCIAS](link-para-a-pasta-validation)
+### 📸 Evidências Fotográficas
+Para comprovar a realização dos testes, disponibilizamos as fotos e autorizações na pasta de evidências.
+
+📂 **[CLIQUE AQUI PARA ABRIR A PASTA DE EVIDÊNCIAS (FOTOS)](./validation/evidence/)**
 
 *(Acesse a pasta `validation/` para ver o relatório detalhado, fotos dos testes e feedbacks brutos).*
 
