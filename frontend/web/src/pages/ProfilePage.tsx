@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
+import { useAuth } from '../context/AuthContext';
 import { UserIcon, TrophyIcon, StarIcon, CloseIcon } from '../components/icons';
-
-const API_BASE_URL = import.meta.env.PROD 
-  ? 'https://ecoguia-api-0wh8.onrender.com/api' 
-  : 'http://localhost:3008/api';
 
 // Interface para tipar os dados que vêm da API
 interface Conquista {
@@ -31,7 +29,11 @@ interface UserData {
 }
 
 const ProfilePage: React.FC = () => {
-  const [user, setUser] = useState<UserData | null>(null);
+  const { user: authUser, logout } = useAuth();
+  const token = Cookies.get('eco_token');
+
+  // Estado para os dados COMPLETOS do perfil vindos do banco
+  const [userProfile, setUserProfile] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -46,7 +48,9 @@ const ProfilePage: React.FC = () => {
     estado: ''
   });
 
-  const userId = localStorage.getItem('user_id');
+  const API_BASE_URL = import.meta.env.PROD 
+    ? 'https://ecoguia-api-0wh8.onrender.com/api' 
+    : 'http://localhost:3008/api';
 
   // Função Auxiliar de Máscara
   const formatPhoneNumber = (value: string) => {
@@ -71,16 +75,28 @@ const ProfilePage: React.FC = () => {
 
   // Função para buscar dados
   const fetchUserData = async () => {
-    if (!userId) {
+    if (!authUser || !token) {
         setError("Usuário não logado.");
         setLoading(false);
         return;
     }
+
     try {
-      const response = await fetch(`${API_BASE_URL}/usuarios/${userId}`);
+      // Usa o ID do usuário logado
+      const response = await fetch(`${API_BASE_URL}/usuarios/${authUser.id_usuario}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.status === 401 || response.status === 403) {
+        logout();
+        return;
+      }
+
       if (!response.ok) throw new Error('Falha ao buscar dados');
       const data = await response.json();
-      setUser(data);
+      setUserProfile(data);
     } catch (err) {
       console.error(err);
       setError('Não foi possível carregar o perfil.');
@@ -91,17 +107,17 @@ const ProfilePage: React.FC = () => {
 
   useEffect(() => {
     fetchUserData();
-  }, []);
+  }, [authUser]);
 
   // Função para abrir o modal preenchido
   const handleOpenEdit = () => {
-    if (user) {
+    if (userProfile) {
       setFormData({
-        nome: user.nome,
-        telefone: user.telefone ? formatPhoneNumber(user.telefone) : '',
-        bairro: user.bairro || '',
-        cidade: user.cidade || '',
-        estado: user.estado || ''
+        nome: userProfile.nome,
+        telefone: userProfile.telefone ? formatPhoneNumber(userProfile.telefone) : '',
+        bairro: userProfile.bairro || '',
+        cidade: userProfile.cidade || '',
+        estado: userProfile.estado || ''
       });
       setIsEditModalOpen(true);
     }
@@ -120,17 +136,28 @@ const ProfilePage: React.FC = () => {
   // Função para salvar alterações
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!userId) return;
+    if (!authUser || !token) return;
     setSaving(true);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/usuarios/${userId}`, {
+      const payload = {
+        ...formData,
+        telefone: formData.telefone.replace(/\D/g, '') // Remove máscara antes de enviar
+      };
+
+      const response = await fetch(`${API_BASE_URL}/usuarios/${authUser.id_usuario}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(payload)
       });
+
+      if (response.status === 401) {
+        logout();
+        return;
+      }
 
       if (response.ok) {
         await fetchUserData(); // Recarrega os dados para atualizar a tela
@@ -147,6 +174,12 @@ const ProfilePage: React.FC = () => {
     }
   };
 
+  const handleLogout = () => {
+      if (window.confirm("Deseja realmente sair do sistema?")) {
+          logout();
+      }
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen text-brand-blue">
@@ -155,7 +188,7 @@ const ProfilePage: React.FC = () => {
     );
   }
 
-  if (error || !user) {
+  if (error || !userProfile) {
     return (
       <div className="text-center py-10 text-red-500">
         <p>{error || 'Usuário não encontrado.'}</p>
@@ -164,11 +197,11 @@ const ProfilePage: React.FC = () => {
   }
 
   const stats = {
-    plants: user.total_plantas || 0, 
-    tips: user.total_dicas || 0,   
-    points: user.pontos_total || 0,
-    daysActive: user.data_cadastro 
-      ? Math.floor((new Date().getTime() - new Date(user.data_cadastro).getTime()) / (1000 * 3600 * 24)) 
+    plants: userProfile.total_plantas || 0, 
+    tips: userProfile.total_dicas || 0,   
+    points: userProfile.pontos_total || 0,
+    daysActive: userProfile.data_cadastro 
+      ? Math.floor((new Date().getTime() - new Date(userProfile.data_cadastro).getTime()) / (1000 * 3600 * 24)) 
       : 1
   };
 
@@ -178,7 +211,7 @@ const ProfilePage: React.FC = () => {
   return (
     <main className="flex-1 bg-gray-50 relative">
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <div className="mb-6">
+        <div className="mb-6 flex justify-between items-center">
             <h1 className="text-3xl font-bold text-gray-900 flex items-center">
                 <UserIcon className="w-8 h-8 mr-3 text-green-600" />
                 Meu Perfil Sustentável
@@ -200,32 +233,34 @@ const ProfilePage: React.FC = () => {
               </div>
               <div className="flex flex-col items-center md:flex-row md:items-start space-y-6 md:space-y-0 md:space-x-8">
                 <img 
-                  src={`https://ui-avatars.com/api/?name=${user.nome}&background=0D9488&color=fff`} 
+                  src={`https://ui-avatars.com/api/?name=${encodeURIComponent(userProfile.nome)}&background=0D9488&color=fff`} 
                   alt="User Avatar" 
                   className="w-24 h-24 rounded-full" 
                 />
                 <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 w-full">
                   <div>
                     <label className="text-xs text-gray-500">Nome Completo</label>
-                    <p className="text-gray-800 font-medium">{user.nome}</p>
+                    <p className="text-gray-800 font-medium">{userProfile.nome}</p>
                   </div>
                   <div>
                     <label className="text-xs text-gray-500">E-mail</label>
-                    <p className="text-gray-800 font-medium">{user.email}</p>
+                    <p className="text-gray-800 font-medium">{userProfile.email}</p>
                   </div>
                   <div>
                     <label className="text-xs text-gray-500">Telefone</label>
-                    <p className="text-gray-800 font-medium">{user.telefone ? formatPhoneNumber(user.telefone) : 'Não informado'}</p>
+                    <p className="text-gray-800 font-medium">
+                      {userProfile.telefone ? formatPhoneNumber(userProfile.telefone) : 'Não informado'}
+                    </p>
                   </div>
                   <div>
                     <label className="text-xs text-gray-500">Endereço</label>
                     <p className="text-gray-800 font-medium">
-                      {user.endereco_completo || 'Endereço não cadastrado'}
+                      {userProfile.endereco_completo || 'Endereço não cadastrado'}
                     </p>
                   </div>
                   <div className="md:col-span-2 border-t pt-4 mt-2">
                     <p className="text-sm text-gray-500">
-                        Membro desde {user.data_cadastro ? new Date(user.data_cadastro).toLocaleDateString('pt-BR') : '-'}
+                        Membro desde {userProfile.data_cadastro ? new Date(userProfile.data_cadastro).toLocaleDateString('pt-BR') : '-'}
                     </p>
                   </div>
                 </div>
@@ -279,13 +314,13 @@ const ProfilePage: React.FC = () => {
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-xl font-semibold text-gray-800">Conquistas</h2>
                     <span className="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">
-                        {user.conquistas ? user.conquistas.length : 0} Desbloqueadas
+                        {userProfile.conquistas ? userProfile.conquistas.length : 0} Desbloqueadas
                     </span>
                 </div>
                 
                 <ul className="space-y-4">
-                    {user.conquistas && user.conquistas.length > 0 ? (
-                        user.conquistas.map((ach, index) => (
+                    {userProfile.conquistas && userProfile.conquistas.length > 0 ? (
+                        userProfile.conquistas.map((ach, index) => (
                             <li key={index} className="flex items-start p-2 hover:bg-gray-50 rounded-lg transition duration-150">
                                 <div className="bg-yellow-50 p-2 rounded-full mr-4 border border-yellow-100 mt-1">
                                    {getAchievementIcon(ach.icone)}
@@ -348,6 +383,7 @@ const ProfilePage: React.FC = () => {
                   value={formData.telefone}
                   onChange={handleChange}
                   placeholder="(xx) xxxxx-xxxx"
+                  maxLength={15}
                 />
               </div>
 
@@ -355,7 +391,7 @@ const ProfilePage: React.FC = () => {
                 <div className="col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">Bairro</label>
                   <input 
-                    type="text"
+                    type="text" 
                     name="bairro"
                     className="w-full p-2 border border-gray-300 rounded focus:ring-green-500 focus:border-green-500"
                     value={formData.bairro}
@@ -366,19 +402,21 @@ const ProfilePage: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-1">Cidade</label>
                   <input 
                     type="text" 
-                    className="w-full p-2 border border-gray-300 rounded focus:ring-green-500 focus:border-green-500"
+                    name="cidade"
+                    className="w-full p-2 border border-gray-300 rounded focus:ring-green-500 focus:border-green-500 bg-gray-100 text-gray-500 cursor-not-allowed"
                     value={formData.cidade}
-                    onChange={e => setFormData({...formData, cidade: e.target.value})}
+                    readOnly
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">UF</label>
                   <input 
                     type="text" 
+                    name="estado"
                     maxLength={2}
-                    className="w-full p-2 border border-gray-300 rounded focus:ring-green-500 focus:border-green-500 uppercase"
+                    className="w-full p-2 border border-gray-300 rounded focus:ring-green-500 focus:border-green-500 uppercase bg-gray-100 text-gray-500 cursor-not-allowed"
                     value={formData.estado}
-                    onChange={e => setFormData({...formData, estado: e.target.value.toUpperCase()})}
+                    readOnly
                   />
                 </div>
               </div>

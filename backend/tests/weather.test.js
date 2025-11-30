@@ -5,6 +5,14 @@ const weatherService = require('../src/services/weatherService');
 jest.mock('../src/services/weatherService');
 
 describe('GET /api/weather', () => {
+  beforeAll(() => {
+    jest.spyOn(console, 'log').mockImplementation(() => {});
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
   beforeEach(() => {
     jest.clearAllMocks();
   });

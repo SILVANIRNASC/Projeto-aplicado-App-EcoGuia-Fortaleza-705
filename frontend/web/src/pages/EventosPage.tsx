@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
+import { useAuth } from '../context/AuthContext';
 import { CalendarIcon, MapPinIcon, CloseIcon, UserIcon, ShareIcon } from '../components/icons';
 
 interface Evento {
@@ -16,14 +18,18 @@ interface Participante {
 }
 
 const EventosPage: React.FC = () => {
+  const { user, logout } = useAuth();
+  const token = Cookies.get('eco_token');
+
   const [eventos, setEventos] = useState<Evento[]>([]);
   const [loading, setLoading] = useState(true);
   
+  // Modais
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAttendeesModalOpen, setIsAttendeesModalOpen] = useState(false);
   const [currentAttendees, setCurrentAttendees] = useState<Participante[]>([]);
   const [currentEventTitle, setCurrentEventTitle] = useState('');
-
+  
   const [saving, setSaving] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -33,18 +39,26 @@ const EventosPage: React.FC = () => {
     horario: '',
     local: ''
   });
-
-  const userId = localStorage.getItem('user_id');
   
   const API_BASE_URL = import.meta.env.PROD 
     ? 'https://ecoguia-api-0wh8.onrender.com/api' 
     : 'http://localhost:3008/api';
 
+  // Helper de Headers
+  const getAuthHeaders = () => {
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    };
+  };
+
   // Buscar Eventos
   const fetchEventos = async () => {
     try {
-      // Passamos o userId na query para saber quais eventos ELE marcou presença
-      const response = await fetch(`${API_BASE_URL}/eventos?id_usuario=${userId || 0}`);
+      // Passa o ID do usuário logado (ou 0 se não estiver logado) para verificar presença
+      const userIdParam = user ? user.id_usuario : 0;
+      const response = await fetch(`${API_BASE_URL}/eventos?id_usuario=${userIdParam}`);
+      
       if (response.ok) {
         const data = await response.json();
         setEventos(data);
@@ -56,10 +70,12 @@ const EventosPage: React.FC = () => {
     }
   };
 
+  // Recarrega eventos quando o usuário muda (login/logout)
   useEffect(() => {
     fetchEventos();
-  }, []);
+  }, [user]);
 
+  // --- VER PARTICIPANTES ---
   const handleViewAttendees = async (evento: Evento) => {
     if (evento.total_participantes === 0) return;
     
@@ -76,7 +92,8 @@ const EventosPage: React.FC = () => {
     }
   };
 
-   const handleShare = (evento: Evento) => {
+  // --- COMPARTILHAR ---
+  const handleShare = (evento: Evento) => {
       const textToShare = `📅 *${evento.titulo}* \n\n📍 Local: ${evento.local}\n⏰ Quando: ${evento.data_formatada}\n\n📝 ${evento.descricao}\n\nParticipe com a gente no EcoGuia Fortaleza! 🌱`;
       
       navigator.clipboard.writeText(textToShare).then(() => {
@@ -84,47 +101,60 @@ const EventosPage: React.FC = () => {
       });
   };
 
-  // Toggle Presença (Check-in)
+  // --- CONFIRMAR PRESENÇA ---
   const handleParticipar = async (id_evento: number) => {
-    if (!userId) return alert("Faça login para participar de eventos.");
+    if (!user || !token) return alert("Faça login para participar de eventos.");
 
     try {
       const response = await fetch(`${API_BASE_URL}/eventos/${id_evento}/participar`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id_usuario: parseInt(userId) })
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ id_usuario: user.id_usuario })
       });
+
+      if (response.status === 401) {
+          logout();
+          return;
+      }
 
       if (response.ok) {
         const data = await response.json();
         if (data.status === 'adicionado') alert("Presença confirmada! 🎉");
-        fetchEventos(); // Recarrega para atualizar contadores e botão
+        fetchEventos(); 
       }
     } catch (error) {
       alert("Erro ao atualizar presença.");
     }
   };
 
-  // Criar Evento
+  // --- CRIAR EVENTO ---
   const handleCreateEvento = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user || !token) {
+        alert("Sessão inválida. Faça login novamente.");
+        return;
+    }
     setSaving(true);
 
     try {
-      // Junta data e hora para o formato timestamp do banco
       const dataHora = `${formData.data_evento} ${formData.horario}:00`;
 
       const response = await fetch(`${API_BASE_URL}/eventos`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({
             titulo: formData.titulo,
             descricao: formData.descricao,
             local: formData.local,
             data_evento: dataHora,
-            id_usuario: parseInt(userId)
+            id_usuario: user.id_usuario // Envia o ID do contexto
         })
       });
+
+      if (response.status === 401) {
+          logout();
+          return;
+      }
 
       if (response.ok) {
         alert("Evento criado com sucesso! 📅");
@@ -144,7 +174,6 @@ const EventosPage: React.FC = () => {
 
   return (
     <main className="flex-1 bg-gray-50 min-h-screen relative">
-      {/* Header */}
       <div className="bg-purple-50 border-b border-purple-100">
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold text-gray-900 flex items-center">
@@ -177,8 +206,8 @@ const EventosPage: React.FC = () => {
                 {eventos.map((evento) => (
                     <div key={evento.id_evento} className={`bg-white rounded-xl shadow-sm border p-6 flex flex-col transition-all ${evento.participando ? 'border-purple-300 ring-1 ring-purple-100' : 'border-gray-200'}`}>
                         <div className="flex-1">
-                            <div className="flex justify-between items-start">
-                                <div className="bg-purple-100 text-purple-800 text-xs font-bold px-2 py-1 rounded uppercase tracking-wide mb-2 inline-block">
+                            <div className="flex justify-between items-start mb-2">
+                                <div className="bg-purple-100 text-purple-800 text-xs font-bold px-2 py-1 rounded uppercase tracking-wide inline-block">
                                     Evento
                                 </div>
                                 <button 
@@ -204,6 +233,7 @@ const EventosPage: React.FC = () => {
                             </div>
                             
                             <p className="text-gray-600 text-sm line-clamp-3 mb-4">{evento.descricao}</p>
+                            
                             <button 
                                 onClick={() => handleViewAttendees(evento)}
                                 className={`flex items-center text-xs mb-4 ${evento.total_participantes > 0 ? 'text-purple-600 hover:underline cursor-pointer' : 'text-gray-400 cursor-default'}`}
@@ -272,6 +302,7 @@ const EventosPage: React.FC = () => {
         </div>
       )}
 
+      {/* Modal Ver Participantes */}
       {isAttendeesModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-lg shadow-xl w-full max-w-sm overflow-hidden animate-fade-in-up">

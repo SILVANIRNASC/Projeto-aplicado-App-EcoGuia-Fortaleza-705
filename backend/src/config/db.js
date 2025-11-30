@@ -12,9 +12,13 @@ const pool = new Pool({
     ssl: isProduction ? { rejectUnauthorized: false } : false
 });
 
-// Testando a conexão ao iniciar
-pool.connect()
-    .then(() => console.log('Conectado ao PostgreSQL com sucesso!'))
+// Só executa o teste de conexão e os logs se NÃO estivermos no ambiente de teste (Jest)
+if (process.env.NODE_ENV !== 'test') {
+  pool.connect()
+    .then(client => {
+      console.log('Conectado ao PostgreSQL com sucesso!');
+      client.release(); // Libera o cliente de volta para o pool
+    })
     .catch(err => console.error('Erro de conexão', err.stack));
-
+}
 module.exports = pool;

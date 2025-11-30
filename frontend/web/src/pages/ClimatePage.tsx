@@ -187,7 +187,6 @@ const ClimatePage: React.FC = () => {
         } else if (tipState.error) {
             content = <span className="text-red-500">Erro: {tipState.error}</span>;
         } else if (tipState.text) {
-            // AQUI ESTÁ A MUDANÇA: ReactMarkdown renderiza o texto
             content = (
                 <ReactMarkdown 
                     children={tipState.text} 

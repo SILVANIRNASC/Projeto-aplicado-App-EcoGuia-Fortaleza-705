@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const plantaController = require('../controllers/plantaController');
+const authMiddleware = require('../middlewares/authMiddleware');
 
+router.use(authMiddleware);
 // POST: Cadastra planta
 router.post('/', plantaController.criarPlanta);
 

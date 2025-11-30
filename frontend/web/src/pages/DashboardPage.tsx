@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import { useAuth } from '../context/AuthContext';
 import { LeafIcon, RecycleIcon, SunIcon, UserIcon } from '../components/icons';
 
 const API_BASE_URL = import.meta.env.PROD 
@@ -23,6 +25,9 @@ const DashboardCard = ({ icon, title, description, path }: { icon: React.ReactNo
 };
 
 const DashboardPage = () => {
+  const { user, logout } = useAuth();
+  const token = Cookies.get('eco_token');
+
   // Estado para armazenar os números reais
   const [stats, setStats] = useState({
     plants: 0,
@@ -31,25 +36,29 @@ const DashboardPage = () => {
     daysActive: 0
   });
   const [loading, setLoading] = useState(true);
-  const [userName, setUserName] = useState('');
 
   // Buscando os dados do Backend
   useEffect(() => {
     const fetchDashboardData = async () => {
-      try {
-        const userId = localStorage.getItem('user_id');
-        const storedName = localStorage.getItem('user_name');
-        
-        if (storedName) setUserName(storedName);
+      // Se não tiver usuário ou token, não busca
+      if (!user || !token) {
+         setLoading(false);
+         return;
+      }
 
-        if (!userId) {
-            // Se não tiver ID, não faz o fetch (idealmente redirecionaria para login)
-            setLoading(false);
+      try {
+        // Usa o ID do usuário do contexto
+        const response = await fetch(`${API_BASE_URL}/usuarios/${user.id_usuario}`, {
+            headers: {
+                'Authorization': `Bearer ${token}` // Adiciona cabeçalho de autenticação
+            }
+        });
+        
+        if (response.status === 401 || response.status === 403) {
+            logout(); // Se o token for inválido, desloga
             return;
         }
 
-        const response = await fetch(`${API_BASE_URL}/usuarios/${userId}`);
-        
         if (response.ok) {
           const data = await response.json();
           
@@ -73,7 +82,7 @@ const DashboardPage = () => {
     };
 
     fetchDashboardData();
-  }, []);
+  }, [user]); // Recarrega se o usuário mudar
 
   return (
     <main className="flex-1 bg-gray-50">
@@ -87,7 +96,8 @@ const DashboardPage = () => {
                 EcoGuia Fortaleza
             </h1>
             <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-              {userName ? `Olá, ${userName}! ` : ''}Transforme sua cidade em um lugar mais verde e sustentável. Cultive, recicle e cuide do meio ambiente de forma inteligente.
+              {/* Usa o nome do contexto */}
+              {user ? `Olá, ${user.nome}! ` : ''}Transforme sua cidade em um lugar mais verde e sustentável. Cultive, recicle e cuide do meio ambiente de forma inteligente.
             </p>
         </div>
         

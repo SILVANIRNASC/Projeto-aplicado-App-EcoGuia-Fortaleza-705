@@ -1,14 +1,21 @@
 const request = require('supertest');
-const app = require('../src/app'); // Corrigido: Aponta para o app dentro da pasta src
+const app = require('../src/app'); 
 const groqService = require('../src/services/groqService');
 const weatherService = require('../src/services/weatherService');
 
 // Mock dos serviços para isolar os testes do controller
-// Corrigido: O caminho agora aponta para a pasta 'src'
 jest.mock('../src/services/groqService');
 jest.mock('../src/services/weatherService');
 
 describe('POST /api/ask', () => {
+  beforeAll(() => {
+    jest.spyOn(console, 'log').mockImplementation(() => {});
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
   // Limpa os mocks antes de cada teste
   beforeEach(() => {
     jest.clearAllMocks();
@@ -28,7 +35,12 @@ describe('POST /api/ask', () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ resposta: mockAnswer });
-    expect(groqService.askGroq).toHaveBeenCalledWith(mockQuestion, expect.any(Object));
+    
+    expect(groqService.askGroq).toHaveBeenCalledWith(
+        mockQuestion, 
+        expect.any(Object), // Clima
+        expect.any(Array)   // Agenda/Eventos
+    );
   });
 
   it('deve retornar status 400 se a pergunta não for fornecida', async () => {
@@ -56,7 +68,7 @@ describe('POST /api/ask', () => {
 
     const mockError = new Error('Falha na API da Groq');
     groqService.askGroq.mockRejectedValue(mockError);
-    weatherService.getFortalezaWeather.mockResolvedValue(null); // Clima pode ou não funcionar
+    weatherService.getFortalezaWeather.mockResolvedValue(null); 
 
     const response = await request(app)
       .post('/api/ask')
@@ -69,4 +81,3 @@ describe('POST /api/ask', () => {
     consoleErrorSpy.mockRestore();
   });
 });
-

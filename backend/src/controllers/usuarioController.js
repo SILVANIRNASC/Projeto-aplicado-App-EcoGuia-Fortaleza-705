@@ -4,20 +4,34 @@ const jwt = require('jsonwebtoken');
 const { verificarConquista } = require('../utils/gamification');
 
 // Listar todos os usuários
-exports.listarUsuarios = async (req, res) => {
-  try {
-    const resultado = await pool.query("SELECT id_usuario, nome, email, telefone, bairro, cidade, estado, (bairro || ', ' || cidade || ' - ' || estado) as endereco_completo, data_cadastro FROM usuarios");
-    res.json(resultado.rows);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Erro ao buscar usuários" });
-  }
-};
+// exports.listarUsuarios = async (req, res) => {
+//   try {
+//     const resultado = await pool.query("SELECT id_usuario, nome, pontos_total, data_cadastro FROM usuarios");
+//     res.json(resultado.rows);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: "Erro ao buscar usuários" });
+//   }
+// };
 
 // Criar um novo usuário
 exports.criarUsuario = async (req, res) => {
   const { nome, email, senha_hash, bairro, cidade, estado, telefone } = req.body;
   try {
+    if (!nome || !email || !senha_hash) {
+      return res.status(400).json({ 
+        error: "Campos obrigatórios ausentes",
+        details: "Por favor, preencha nome, email e senha." 
+      });
+    }
+
+    if (!email.includes('@')) {
+      return res.status(400).json({ 
+        error: "Email inválido",
+        details: "Insira um endereço de email válido." 
+      });
+    }
+    
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(senha_hash, saltRounds);
 
@@ -43,6 +57,10 @@ exports.criarUsuario = async (req, res) => {
 
 exports.buscarUsuarioPorId = async (req, res) => {
   const { id } = req.params; // Pega o ID que veio na URL
+
+  if (parseInt(id) !== parseInt(req.userId)) {
+        return res.status(403).json({ error: "Acesso negado. Você só pode visualizar seu próprio perfil completo." });
+    }
 
   try {
     const query = `SELECT id_usuario, nome, email, telefone, bairro, cidade, estado,
@@ -78,6 +96,10 @@ exports.atualizarUsuario = async (req, res) => {
     const { id } = req.params;
     const { nome, telefone, bairro, cidade, estado } = req.body;
 
+    if (parseInt(id) !== parseInt(req.userId)) {
+        return res.status(403).json({ error: "Acesso negado. Você só pode editar seu próprio perfil." });
+    }
+    
     try {
         const query = `
             UPDATE usuarios 

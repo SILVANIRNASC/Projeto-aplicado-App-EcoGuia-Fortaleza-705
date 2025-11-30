@@ -2,9 +2,17 @@ const pool = require('../config/db');
 const { verificarConquista } = require('../utils/gamification');
 
 exports.criarPlanta = async (req, res) => {
-    const { id_usuario, nome_popular, nome_cientifico, data_plantio, frequencia_rega } = req.body;
+    const id_usuario = req.userId;
+    const { nome_popular, nome_cientifico, data_plantio, frequencia_rega } = req.body;
 
     try {
+        if (!nome_popular || !data_plantio || !frequencia_rega) {
+            return res.status(400).json({ 
+                error: "Campos obrigatórios ausentes",
+                details: "Por favor, preencha Nome Popular, Data do Plantio e Regar a cada (dias)." 
+            });
+        }
+
         const freqRega = frequencia_rega || 3;
         
         const query = `INSERT INTO plantas (id_usuario, nome_popular, nome_cientifico, data_plantio, frequencia_rega, ultima_rega) 
@@ -41,9 +49,22 @@ exports.criarPlanta = async (req, res) => {
 
 exports.registrarCuidado = async (req, res) => {
     const { id_planta } = req.params;
-    const { tipo_cuidado } = req.body; // 'rega', 'adubacao' ou 'poda'
+    const { tipo_cuidado } = req.body;
+    const id_usuario_logado = req.userId;
 
     try {
+        const checkQuery = 'SELECT id_usuario FROM plantas WHERE id_planta = $1';
+        const checkResult = await pool.query(checkQuery, [id_planta]);
+
+        if (checkResult.rowCount === 0) {
+            return res.status(404).json({ error: "Planta não encontrada." });
+        }
+
+        // Se a planta não for do usuário logado, bloqueia
+        if (checkResult.rows[0].id_usuario !== id_usuario_logado) {
+            return res.status(403).json({ error: "Você não pode cuidar da planta de outra pessoa." });
+        }
+
         let coluna = '';
         if (tipo_cuidado === 'rega') coluna = 'ultima_rega';
         else if (tipo_cuidado === 'adubacao') coluna = 'ultima_adubacao';
@@ -63,6 +84,11 @@ exports.registrarCuidado = async (req, res) => {
 
 exports.listarPlantasPorUsuario = async (req, res) => {
     const { id_usuario } = req.params;
+    const id_usuario_logado = req.userId;
+
+    if (parseInt(id_usuario) !== id_usuario_logado) {
+        return res.status(403).json({ error: "Acesso negado. Você só pode ver seu próprio jardim." });
+    }
 
     try {
         const query = `SELECT *, TO_CHAR(data_plantio, 'DD/MM/YYYY') as data_formatada 
@@ -91,7 +117,7 @@ exports.listarPlantasPorUsuario = async (req, res) => {
 
             return {
                 ...planta,
-                proxima_rega_data: proximaRega, // Data objeto JS
+                proxima_rega_data: proximaRega,
                 status_rega: statusRega // Texto amigável para o front
             };
         });

@@ -49,6 +49,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: "Ocorreu um erro interno no servidor." });
 });
 
+
 if (process.env.NODE_ENV !== "test") {
   app.listen(port, () => {
     console.log(

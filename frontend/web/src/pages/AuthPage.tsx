@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext'; // Importa o contexto
+import { useAuth } from '../context/AuthContext';
 import { LeafIcon, UserIcon, MailIcon, LockIcon, EyeIcon, EyeOffIcon, MapPinIcon } from '../components/icons';
 
 const AuthPage: React.FC = () => {
-  const { login } = useAuth(); // Pega a função do contexto
+  const { login } = useAuth();
 
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showLocationMessage, setShowLocationMessage] = useState(false);
+  const [erro, setErro] = useState("");
 
   const [formData, setFormData] = useState({
     nome: '',
@@ -37,7 +38,10 @@ const AuthPage: React.FC = () => {
     return `(${match.substring(0, 2)}) ${match.substring(2, 7)}-${match.substring(7, 11)}`;
   };
 
-  const toggleAuthMode = () => setIsLogin((prev) => !prev);
+  const toggleAuthMode = () => {
+    setIsLogin((prev) => !prev);
+    setErro(""); 
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -78,9 +82,13 @@ const AuthPage: React.FC = () => {
       } else {
         alert(`Erro: ${data.error}`);
       }
-    } catch (error) {
+    } catch (err) {
       console.error(error);
-      alert('Erro ao conectar com o servidor.');
+      if (err.response && err.response.data) {
+      setErro(err.response.data.details || err.response.data.message || "Erro desconhecido");
+    } else {
+      setErro("Sem conexão com o servidor. Verifique sua internet.");
+    }
     } finally {
       setLoading(false);
     }
@@ -140,6 +148,20 @@ const AuthPage: React.FC = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          {erro && (
+            <div className="mb-4 bg-red-50 border-l-4 border-red-400 p-4 animate-fade-in-up">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <AlertCircle className="h-5 w-5 text-red-400" />
+                </div>
+                <div className="ml-3">
+                  <p className="text-sm text-red-700 font-medium">
+                    {erro}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
           <form className="space-y-4" onSubmit={handleSubmit}>
             
             {!isLogin && (

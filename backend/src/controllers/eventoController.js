@@ -35,6 +35,13 @@ exports.listarEventos = async (req, res) => {
 exports.criarEvento = async (req, res) => {
     const { titulo, descricao, data_evento, local, id_usuario } = req.body;
 
+    if (!titulo || !descricao || !data_evento || !local) {
+        return res.status(400).json({ 
+            error: "Campos obrigatórios ausentes",
+            details: "Por favor, preencha Título, Descrição, Data e Local." 
+        });
+    }
+
     try {
         const query = `
             INSERT INTO eventos (titulo, descricao, data_evento, local) 
@@ -46,14 +53,22 @@ exports.criarEvento = async (req, res) => {
 
         // AUTO CHECK-IN PARA O CRIADOR
         if (id_usuario) {
-            await pool.query(
-                'INSERT INTO participacao_evento (id_evento, id_usuario) VALUES ($1, $2)', 
-                [evento.id_evento, id_usuario]
-            );
-            
-            await verificarConquista(id_usuario, 'EVENTO_PRESENCA');
+            const userCheck = await pool.query('SELECT 1 FROM usuarios WHERE id_usuario = $1', [id_usuario]);
+
+            if (userCheck.rowCount > 0) {
+                await pool.query(
+                    'INSERT INTO participacao_evento (id_evento, id_usuario) VALUES ($1, $2)', 
+                    [evento.id_evento, id_usuario]
+                );
+                
+                // Tenta dar a conquista (falhas aqui não devem quebrar a criação do evento)
+                try {
+                    await verificarConquista(id_usuario, 'EVENTO_PRESENCA');
+                } catch (gamificationError) {
+                    console.warn("Erro ao processar gamificação no evento:", gamificationError);
+                }
+            }
         }
-        
 
         res.status(201).json(evento);
     } catch (error) {
@@ -68,6 +83,18 @@ exports.togglePresenca = async (req, res) => {
     const { id_usuario } = req.body;
 
     try {
+         // Verifica se o evento existe
+        const eventoCheck = await pool.query('SELECT 1 FROM eventos WHERE id_evento = $1', [id_evento]);
+        if (eventoCheck.rowCount === 0) {
+            return res.status(404).json({ error: "Evento não encontrado." });
+        }
+
+        // Verifica se o usuário existe
+        const userCheck = await pool.query('SELECT 1 FROM usuarios WHERE id_usuario = $1', [id_usuario]);
+        if (userCheck.rowCount === 0) {
+            return res.status(404).json({ error: "Usuário não encontrado." });
+        }
+
         // Verifica se já está participando
         const checkQuery = 'SELECT * FROM participacao_evento WHERE id_evento = $1 AND id_usuario = $2';
         const checkRes = await pool.query(checkQuery, [id_evento, id_usuario]);
@@ -81,8 +108,12 @@ exports.togglePresenca = async (req, res) => {
             await pool.query('INSERT INTO participacao_evento (id_evento, id_usuario) VALUES ($1, $2)', [id_evento, id_usuario]);
             
             // GAMIFICAÇÃO
-            await verificarConquista(id_usuario, 'EVENTO_PRESENCA');
-            
+            try {
+                await verificarConquista(id_usuario, 'EVENTO_PRESENCA');
+            } catch (gamificationError) {
+                 console.warn("Erro ao processar gamificação na presença:", gamificationError);
+            }   
+                     
             res.json({ status: 'adicionado', message: 'Presença confirmada!' });
         }
     } catch (error) {

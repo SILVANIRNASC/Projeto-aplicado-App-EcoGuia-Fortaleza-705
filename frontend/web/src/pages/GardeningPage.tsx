@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
+import { useAuth } from '../context/AuthContext';
 import { PlantIcon, CloseIcon, CalendarIcon } from '../components/icons';
-import { Tip } from '../types';
 
 // Interfaces utilizadas para mapear os dados retornados do backend
 interface PlantDB {
@@ -28,6 +29,11 @@ interface TipDB {
 }
 
 const GardeningPage: React.FC = () => {
+  const { user, logout } = useAuth();
+  
+  // Pega o token do Cookie para enviar nas requisições
+  const token = Cookies.get('eco_token');
+
   // Estados principais da aplicação
   const [plants, setPlants] = useState<PlantDB[]>([]);
   const [isLoadingPlants, setIsLoadingPlants] = useState(true);
@@ -51,18 +57,36 @@ const GardeningPage: React.FC = () => {
     frequencia_rega: 3
   });
 
-  const userId = localStorage.getItem('user_id');
+  const API_BASE_URL = import.meta.env.PROD 
+    ? 'https://ecoguia-api-0wh8.onrender.com/api' 
+    : 'http://localhost:3008/api';
 
-const API_BASE_URL = import.meta.env.PROD 
-  ? 'https://ecoguia-api-0wh8.onrender.com/api' 
-  : 'http://localhost:3008/api';
+  // Helper para criar os headers com o Token
+  const getAuthHeaders = () => {
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    };
+  };
 
-  // Carrega as plantas do usuário (ID fixo para testes)
+  // Carrega as plantas do usuário
   const fetchPlants = async () => {
-    if (!userId) return;
+    if (!user || !token) {
+      setIsLoadingPlants(false);
+      return; 
+    }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/plantas/usuario/${userId}`);
+      const response = await fetch(`${API_BASE_URL}/plantas/usuario/${user.id_usuario}`, {
+        method: 'GET',
+        headers: getAuthHeaders()
+      });   
+
+      if (response.status === 401 || response.status === 403) {
+        logout();
+        return;
+      }
+
       if (response.ok) {
         setPlants(await response.json());
       }
@@ -76,7 +100,14 @@ const API_BASE_URL = import.meta.env.PROD
   // Carrega as dicas publicadas
   const fetchTips = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/dicas`);
+      // Dicas podem ser públicas, mas se tiver token, enviamos
+      const headers: any = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
+      const response = await fetch(`${API_BASE_URL}/dicas`, {
+        headers: headers
+      });
+
       if (response.ok) {
         setTips(await response.json());
       }
@@ -88,19 +119,29 @@ const API_BASE_URL = import.meta.env.PROD
   useEffect(() => {
     fetchPlants();
     fetchTips();
-  }, []);
+  }, [user]); // Recarrega se o usuário mudar
 
   // Atualiza somente a data da última rega
   const handleRegar = async (id_planta: number) => {
+    if (!token) return alert("Você precisa estar logado.");
+
     try {
       const response = await fetch(`${API_BASE_URL}/plantas/${id_planta}/cuidado`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ tipo_cuidado: 'rega' })
       });
 
+      if (response.status === 401) {
+         logout();
+         return;
+      }
+
       if (response.ok) {
         fetchPlants(); // Recarrega lista para recalcular status
+        alert('Planta regada! 💧 As datas foram atualizadas.');
+      } else {
+        alert("Erro ao registrar rega.");
       }
     } catch {
       alert('Erro ao conectar com o servidor.');
@@ -110,8 +151,8 @@ const API_BASE_URL = import.meta.env.PROD
   // Salva uma nova planta
   const handleSavePlant = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!userId) {
-        alert("Usuário não identificado.");
+    if (!user || !token) {
+        alert("Sessão inválida. Faça login novamente.");
         return;
     }
     setSaving(true);
@@ -119,17 +160,25 @@ const API_BASE_URL = import.meta.env.PROD
     try {
       const response = await fetch(`${API_BASE_URL}/plantas`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({
-          id_usuario: parseInt(userId),
+          id_usuario: user.id_usuario, 
           ...formData
         })
       });
 
+      if (response.status === 401) {
+        logout();
+        return;
+      }
+
       if (response.ok) {
+        alert('Planta cadastrada com sucesso! 🌱');
         setIsModalOpen(false);
         setFormData({ nome_popular: '', nome_cientifico: '', data_plantio: '', frequencia_rega: 3 });
         fetchPlants();
+      } else {
+        alert("Erro ao salvar planta.");
       }
     } catch (error) {
       console.error('Erro ao cadastrar planta:', error);
@@ -141,20 +190,28 @@ const API_BASE_URL = import.meta.env.PROD
   // Publica uma nova dica na comunidade
   const handleAddTip = async () => {
     if (!newTip.trim()) return;
-    if (!userId) return alert("Faça login para postar.");
+    if (!user || !token) return alert("Faça login para postar.");
 
     setPostingTip(true);
 
     try {
       const response = await fetch(`${API_BASE_URL}/dicas`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id_usuario: parseInt(userId), descricao: newTip })
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ id_usuario: user.id_usuario, descricao: newTip })
       });
+
+      if (response.status === 401) {
+        logout();
+        return;
+      }
 
       if (response.ok) {
         setNewTip('');
         fetchTips();
+        alert('Dica publicada! 🌿');
+      } else {
+        alert("Erro ao publicar dica.");
       }
     } catch (error) {
       console.error(error);
@@ -169,7 +226,7 @@ const API_BASE_URL = import.meta.env.PROD
     setIsCalendarModalOpen(true);
   };
 
-  // Calcula a próxima data de cuidado baseado na última e no intervalo
+  // Calcula a próxima data de cuidado
   const calcularProximaData = (ultimaData: string, dias: number) => {
     if (!ultimaData) return 'Nunca';
     const data = new Date(ultimaData);
@@ -177,7 +234,7 @@ const API_BASE_URL = import.meta.env.PROD
     return data.toLocaleDateString('pt-BR');
   };
 
-  // Evita mostrar botão de rega caso já tenha sido regada no dia
+  // Verifica se já regou hoje
   const foiRegadoHoje = (dataString: string) => {
     if (!dataString) return false;
     const hoje = new Date();
@@ -245,26 +302,27 @@ const API_BASE_URL = import.meta.env.PROD
                           <p className={`text-sm font-bold mb-2 ${plant.status_rega === 'Atrasada!' ? 'text-red-600' : 'text-blue-600'}`}>
                             <span role="img" aria-label="watering-can">💧</span> Próxima rega: {plant.status_rega}
                           </p>
-                          <div className="space-x-2">
+                          <div className="space-x-2 flex justify-end items-center">
                             {isRegado ? (
-                                <button 
-                                  disabled
-                                  className="px-3 py-1 bg-gray-100 text-gray-400 text-xs font-semibold rounded-full cursor-not-allowed border border-gray-100"
-                                >
-                                  Regado hoje ✔
-                                </button>
-                              ) : (
-                                <button 
-                                  onClick={() => handleRegar(plant.id_planta)}
-                                  className="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full hover:bg-green-200 border border-green-200 transition-all active:scale-95"
-                                >
-                                  Reguei hoje
-                                </button>
-                              )}
+                              <button 
+                                disabled
+                                className="px-3 py-1 bg-gray-100 text-gray-400 text-xs font-semibold rounded-full cursor-not-allowed border border-gray-100 flex items-center"
+                              >
+                                Regado hoje <span className="ml-1 text-green-500">✔</span>
+                              </button>
+                            ) : (
+                              <button 
+                                onClick={() => handleRegar(plant.id_planta)}
+                                className="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full hover:bg-green-200 border border-green-200 transition-all active:scale-95"
+                              >
+                                Reguei hoje
+                              </button>
+                            )}
                             <button 
                               onClick={() => openCalendar(plant)}
                               className="px-3 py-1 bg-gray-100 text-gray-800 text-xs font-semibold rounded-full hover:bg-gray-200 border border-gray-200 flex-inline items-center"
-                            > Calendário
+                            >
+                              Calendário
                             </button>
                           </div>
                         </div>
@@ -302,6 +360,7 @@ const API_BASE_URL = import.meta.env.PROD
               ) : (
                  tips.map((tip) => (
                   <div key={tip.id_dica} className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex items-start animate-fade-in-up">
+                    {/* Avatar com iniciais */}
                      <img 
                         src={`https://ui-avatars.com/api/?name=${encodeURIComponent(tip.autor)}&background=0D9488&color=fff`} 
                         alt={tip.autor} 
@@ -310,7 +369,7 @@ const API_BASE_URL = import.meta.env.PROD
                     <div className="flex-1">
                       <p className="text-sm text-gray-800 whitespace-pre-wrap">{tip.descricao}</p>
                       <div className="flex justify-between items-center mt-2">
-                         <p className="text-xs text-gray-500 font-semibold">- {tip.autor}</p>
+                         <p className="text-xs text-green-600 font-semibold">- {tip.autor}</p>
                          <p className="text-[10px] text-gray-400">{tip.data_formatada}</p>
                       </div>
                     </div>
@@ -322,17 +381,15 @@ const API_BASE_URL = import.meta.env.PROD
         </div>
       </div>
 
+      {/* MODAL (POPUP) DE CADASTRO */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden animate-fade-in-up">
-            <div className="flex justify-between items-center p-4 border-b bg-gray-50">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6 animate-fade-in-up">
+            <div className="flex justify-between items-center mb-4 border-b pb-2">
               <h3 className="text-lg font-bold text-gray-900">Nova Planta</h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-gray-500 hover:text-gray-700">
-                <CloseIcon className="w-6 h-6" />
-              </button>
+              <button onClick={() => setIsModalOpen(false)}><CloseIcon className="w-6 h-6 text-gray-500" /></button>
             </div>
-            
-            <form onSubmit={handleSavePlant} className="p-6 space-y-4">
+            <form onSubmit={handleSavePlant} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700">Nome Popular</label>
                 <input type="text" required className="w-full p-2 border rounded" value={formData.nome_popular} onChange={e => setFormData({...formData, nome_popular: e.target.value})} />
@@ -355,6 +412,7 @@ const API_BASE_URL = import.meta.env.PROD
         </div>
       )}
     
+      {/* MODAL DE CALENDÁRIO */}
       {isCalendarModalOpen && selectedPlant && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden animate-fade-in-up">
@@ -370,6 +428,7 @@ const API_BASE_URL = import.meta.env.PROD
               <p className="text-sm text-gray-500 mb-6 italic">{selectedPlant.nome_cientifico}</p>
 
               <div className="space-y-4">
+                {/* CARD DE REGA */}
                 <div className="flex items-center bg-blue-50 p-3 rounded-lg border border-blue-100">
                   <div className="bg-blue-100 p-2 rounded-full mr-3">
                     <span role="img" aria-label="water">💧</span>
@@ -379,7 +438,8 @@ const API_BASE_URL = import.meta.env.PROD
                     <p className="text-xs text-blue-600">Frequência: {selectedPlant.frequencia_rega} dias</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-bold text-gray-800">
+                    <p className="font-bold text-gray-800">{selectedPlant.status_rega}</p>
+                    <p className="text-xs text-gray-500">
                       {calcularProximaData(selectedPlant.ultima_rega, selectedPlant.frequencia_rega || 3)}
                     </p>
                   </div>
@@ -395,7 +455,7 @@ const API_BASE_URL = import.meta.env.PROD
                   </div>
                   <div className="text-right">
                     <p className="font-bold text-gray-800">
-                       {calcularProximaData(selectedPlant.ultima_adubacao, selectedPlant.frequencia_adubacao)}
+                       {calcularProximaData(selectedPlant.ultima_adubacao, selectedPlant.frequencia_adubacao || 30)}
                     </p>
                   </div>
                 </div>
@@ -410,7 +470,7 @@ const API_BASE_URL = import.meta.env.PROD
                   </div>
                   <div className="text-right">
                     <p className="font-bold text-gray-800">
-                      {calcularProximaData(selectedPlant.ultima_poda, selectedPlant.frequencia_poda)}
+                      {calcularProximaData(selectedPlant.ultima_poda, selectedPlant.frequencia_poda || 90)}
                     </p>
                   </div>
                 </div>

@@ -4,12 +4,10 @@ import remarkGfm from 'remark-gfm';
 import { Link } from 'react-router-dom';
 import { CalendarIcon, ChatBubbleIcon, CloseIcon, HappyFaceIcon, LeafIcon, RecycleIcon } from './icons';
 
-// Configuração da URL da API (Produção vs Localhost)
 const API_BASE_URL = import.meta.env.PROD 
   ? 'https://ecoguia-api-0wh8.onrender.com/api' 
   : 'http://localhost:3008/api';
 
-// Adicionei a prop `onClick` para os botões de sugestão funcionarem
 const SuggestionButton = ({ icon, text, onClick }: { icon: React.ReactNode, text: string, onClick: () => void }) => (
     <button 
         onClick={onClick}
@@ -28,7 +26,6 @@ const Chatbot: React.FC = () => {
 
     const toggleChat = () => setIsOpen(!isOpen);
 
-    // Função handleSend atualizada para conectar com o Backend
     const handleSend = async (textOverride?: string) => {
         const textToSend = textOverride || inputValue;
 
